@@ -1,0 +1,297 @@
+[
+    {
+        "name": "XXL Pack",
+        "levels": ["marathon", "ragnarok", "aftercatabath"],
+        "colour": "#cea66c"
+    },
+{
+        "name": "XL Pack 1",
+        "levels": ["verdant_landscape", "sigma", "calamity"],
+        "colour": "#d6880c"
+    },
+{
+        "name": "XL Pack 2",
+        "levels": ["kenos", "visible_ray", "belloq"],
+        "colour": "#d6880c"
+    },
+{
+        "name": "XL Pack 3",
+        "levels": ["zodiac", "edge_of_the_blade", "lucid_chaos"],
+        "colour": "#d6880c"
+    },
+{
+        "name": "XL Pack 4",
+        "levels": ["deimos_(tygrysek_version)", "yatagarasu", "plasma_pulse_finale"],
+        "colour": "#d6880c"
+    },
+{
+        "name": "Wave Pack 1",
+        "levels": ["slaughterhouse", "africa_circles", "the_hallucination"],
+        "colour": "#0a5e1d"
+    },
+{
+        "name": "Wave Pack 2",
+        "levels": ["aquatic_auroras", "natural_disaster", "ddiamond"],
+        "colour": "#0a5e1d"
+    },
+{
+        "name": "Wave Pack 3",
+        "levels": ["aerial_gleam", "azure_abyss", "azure_flare"],
+        "colour": "#0a5e1d"
+    },
+{
+        "name": "Wave Pack 4",
+        "levels": ["aquamarine", "sakupen_circles", "arctic_lights"],
+        "colour": "#0a5e1d"
+    },
+{
+        "name": "Wave Pack 5",
+        "levels": ["beztana_vortex", "generic_wave", "hateful_reflection"],
+        "colour": "#0a5e1d"
+    },
+{
+        "name": "Quickie Pack 1",
+        "levels": ["citra", "unknown", "qoueo"],
+        "colour": "#3786fc"
+    },
+{
+        "name": "Quickie Pack 2",
+        "levels": ["arcturus", "wasureta", "kowareta"],
+        "colour": "#3786fc"
+    },
+{
+        "name": "Quickie Pack 3",
+        "levels": ["atomic_cannon", "erebus", "la_magicienne_rose"],
+        "colour": "#3786fc"
+    },
+{
+        "name": "Quickie Pack 4",
+        "levels": ["rage", "moment", "cobwebs"],
+        "colour": "#3786fc"
+    },
+{
+        "name": "Timing Pack 1",
+        "levels": ["frozen_cave", "hard_machine", "cold_sweat"],
+        "colour": "#adadad"
+    },
+{
+        "name": "Timing Pack 2",
+        "levels": ["rust", "silent_clubstep", "shardscapes"],
+        "colour": "#adadad"
+    },
+{
+        "name": "Timing Pack 3",
+        "levels": ["aronia", "xo", "sary_never_clear"],
+        "colour": "#adadad"
+    },
+{
+        "name": "Timing Pack 4",
+        "levels": ["dolos", "firework", "sunset_sandstorm"],
+        "colour": "#adadad"
+    },
+{
+        "name": "Timing Pack 5",
+        "levels": ["aesthetic", "shatter", "element_111_rg"],
+        "colour": "#adadad"
+    },
+{
+        "name": "KylashTheKiller Pack",
+        "levels": ["lucid_nightmares", "sunset_sandstorm", "aftercatabath"],
+        "colour": "#e50000"
+    },
+{
+        "name": "iRaily Pack",
+        "levels": ["wasureta", "deimos_(tygrysek_version)", "xo"],
+        "colour": "#9c50da"
+    },
+{
+        "name": "Shel Pack",
+        "levels": ["atomic_cannon_mk_ii", "atomic_cannon", "spectrum_rave"],
+        "colour": "#f4a460"
+    },
+{
+        "name": "ZerniasX Pack",
+        "levels": ["element_111_rg", "stereo_lament", "rage"],
+        "colour": "#7fffd4"
+    },
+{
+        "name": "Kobra456 Pack",
+        "levels": ["timor", "jelly_shots", "the_yandere"],
+        "colour": "#f29eff"
+    },
+{
+        "name": "Andrew Pack",
+        "levels": ["ethereal_artifice", "aesthetic", "moment"],
+        "colour": "#1261a0"
+    },
+{
+        "name": "Dandy Chiggins Pack",
+        "levels": ["eternal_moment", "natural_disaster", "qoueo"],
+        "colour": "#0bd7ff"
+    },
+{
+        "name": "Diverse Pack",
+        "levels": ["the_golden", "enjoy", "no_jokes"],
+        "colour": "#263961"
+    },
+{
+        "name": "Riptide Pack",
+        "levels": ["neutra", "chromatic_haze", "sonic_wave_rebirth"],
+        "colour": "#e1681c"
+    },
+{
+        "name": "Strix Pack",
+        "levels": ["anemesis", "trueffet", "aronia"],
+        "colour": "#f8a476"
+    },
+{
+        "name": "AcropolisBoy Pack",
+        "levels": ["slaughterhouse", "p00p", "sary_never_clear"],
+        "colour": "#b000f9"
+    },
+{
+        "name": "Chsp Pack 1",
+        "levels": ["celestial_force", "zodiac", "keres"],
+        "colour": "#66ff66"
+    },
+{
+        "name": "Chsp Pack 2",
+        "levels": ["deimos_(tygrysek_version)", "the_rupture", "generic_wave"],
+        "colour": "#00ff4c"
+    },
+{
+        "name": "Lil_Creator Pack",
+        "levels": ["sunset_sandstorm", "shatter", "cybernetic_crescent"],
+        "colour": "#a17ef4"
+    },
+{
+        "name": "Prometheus Pack",
+        "levels": ["the_hell_origin", "arcturus", "promethean"],
+        "colour": "#e6a417"
+    },
+{
+        "name": "Whitar Pack",
+        "levels": ["macabre", "aesthetic", "spectrum_rave"],
+        "colour": "#0099e1"
+    },
+{
+        "name": "Kiwi1938 Pack",
+        "levels": ["marathon", "cold_sweat", "super_probably_level"],
+        "colour": "#50c878"
+    },
+{
+        "name": "Deceit Pack",
+        "levels": ["solar_flare", "hephaestus", "cobwebs"],
+        "colour": "#fde304"
+    },
+{
+        "name": "Sarcasticmuch Pack",
+        "levels": ["eternal_moment", "aquatic_auroras", "unknown"],
+        "colour": "#079fdc"
+    },
+{
+        "name": "SRU Pack",
+        "levels": ["silent_clubstep", "ragnarok", "aftercatabath"],
+        "colour": "#8b0505"
+    },
+{
+        "name": "Virtz Pack",
+        "levels": ["verdant_landscape", "descent_into_exile", "belloq"],
+        "colour": "#8b0505"
+    },
+{
+        "name": "asherr Pack",
+        "levels": ["love", "untitled_unmastered", "shardscapes"],
+        "colour": "#642c94"
+    },
+{
+        "name": "/Swan Pack",
+        "levels": ["neutra", "the_golden", "le_fishe"],
+        "colour": "#ebf7f6"
+    },
+{
+        "name": "CarlIsBored Pack",
+        "levels": ["ringy_paracosm", "down_bass_incarnate", "no_jokes"],
+        "colour": "#e23838"
+    },
+{
+        "name": "TravelChimp Pack",
+        "levels": ["atomic_cannon_mk_ii", "atomic_cannon", "walter_white"],
+        "colour": "#6c4675"
+    },
+{
+        "name": "Time Pack",
+        "levels": ["sunset_sandstorm", "eternal_moment", "moment"],
+        "colour": "#ecac00"
+    },
+{
+        "name": "Colourless Collection",
+        "levels": ["shardscapes", "xo", "jelly_shots", "firework", "shatter"],
+        "colour": "#777785"
+    },
+{
+        "name": "Colourful Collection",
+        "levels": ["calamity", "visible_ray", "vengeance", "chroma_finale"],
+        "colour": "#d95030"
+    },
+{
+        "name": "Dedication Pack",
+        "levels": ["vengeance", "abandoned", "retribution"],
+        "colour": "#7e7e7e"
+    },
+{
+        "name": "The Pack",
+        "levels": ["the_hallucination", "the_reaper", "the_rupture", "the_yandere", "the_golden"],
+        "colour": "#8ee9c1"
+    },
+{
+        "name": "Weather Pack",
+        "levels": ["spectrum_cyclone", "sunset_sandstorm", "knights_of_thunder"],
+        "colour": "#00b35f"
+    },
+{
+        "name": "Cold Pack",
+        "levels": ["arctic_lights", "glacial_core", "cold_sweat"],
+        "colour": "#a8e0f1"
+    },
+{
+        "name": "Greek Pack",
+        "levels": ["dolos", "acheron", "arcturus", "erebus", "keres"],
+        "colour": "#0d5eaf"
+    },
+{
+        "name": "Memory Pack",
+        "levels": ["super_probably_level", "marathon", "triple_six", "killbot", "limbo"],
+        "colour": "#e27171"
+    },
+{
+        "name": "Old Pack",
+        "levels": ["hard_machine", "silent_clubstep", "sary_never_clear", "element_111_rg"],
+        "colour": "#7d836f"
+    },
+{
+        "name": "SCREAM PACK 1",
+        "levels": ["citra", "rust", "szyslak", "superhatemeworld"],
+        "colour": "#a8af58"
+    },
+{
+        "name": "SCREAM PACK 2",
+        "levels": ["chroma_finale", "sary_never_clear", "euphoria", "atomic_cannon"],
+        "colour": "#a8af58"
+    },
+{
+        "name": "SCREAM PACK 3",
+        "levels": ["veil", "shatter", "explicit", "monstrosity"],
+        "colour": "#a8af58"
+    },
+{
+        "name": "Shitty RGB Pack",
+        "levels": ["frozen_cave", "verdant_landscape", "anemesis"],
+        "colour": "#006de0"
+    },
+{
+        "name": "Former Top 1 Pack",
+        "levels": ["yatagarasu", "zodiac", "the_golden"],
+        "colour": "#ffd700"
+    }
+]

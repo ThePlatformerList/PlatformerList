@@ -1,0 +1,77 @@
+[
+    {
+        "role": "owner",
+        "name": "Microwaveee",
+        "link": "https://www.youtube.com/channel/UC4BZvLEre3SrihXXL-eItWg"
+    },
+    {
+        "role": "owner",
+        "name": "JustCrust",
+        "link": "#"
+    },
+    {
+        "role": "owner",
+        "name": "Prometheus",
+        "link": "https://www.youtube.com/c/PrometheusAlt"
+    },
+    {
+        "role": "admin",
+        "name": "TravelChimp",
+        "link": "https://www.youtube.com/@travelchimp8217"
+    },
+    {
+        "role": "admin",
+        "name": "KylashTheKiller",
+        "link": "https://youtube.com/@KylashTheKiller"
+    },
+    {
+        "role": "admin",
+        "name": "SorryM8",
+        "link": "#"
+    },
+    {
+        "role": "seniormod",
+        "name": "SarcasticMuch",
+        "link": "https://www.youtube.com/channel/UCH4iSascx58Bfue2cfpWKJQ"
+    },
+    {
+        "role": "mod",
+        "name": "lermor",
+        "link": "#"
+    },
+    {
+        "role": "mod",
+        "name": "lucap123",
+        "link": "https://www.youtube.com/@lucap123gd8"
+    },
+    {
+        "role": "mod",
+        "name": "srus",
+        "link": "https://www.youtube.com/channel/UCZWCsnRMKs7VSyO094YeyJw"
+    },
+    {
+        "role": "mod",
+        "name": "Wiktor",
+        "link": "https://www.youtube.com/channel/UCD9Q_xZmonsNc3FkQ_I1qTw"
+    },
+    {
+        "role": "mod",
+        "name": "homegrowntag",
+        "link": "https://www.youtube.com/channel/UCtPsZ68MCked5rgimzzX7Hw"
+    },
+    {
+        "role": "dev",
+        "name": "Prometheus",
+        "link": "https://www.youtube.com/c/PrometheusAlt"
+    },
+    {
+        "role": "dev",
+        "name": "Emonadeo",
+        "link": "https://github.com/Emonadeo"
+    },
+    {
+        "role": "dev",
+        "name": "KrisGra",
+        "link": "https://www.youtube.com/channel/UCrB80p9IxnDthH551FpqlwQ"
+    }
+]
