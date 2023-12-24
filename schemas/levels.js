@@ -9,10 +9,11 @@ const worldRecordSchema = new mongoose.Schema({
 const levelsSchema = new mongoose.Schema({
     position: Number,
     name: String,
+    ytcode: String,
     creator: String,
     levelID: String,
     verifier: String,
-    worldRecord: [worldRecordSchema]
+    record: worldRecordSchema
 })
 
 module.exports = mongoose.model("levels", levelsSchema)
