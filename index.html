@@ -7,10 +7,10 @@
     <meta property="og:title" content="Platformer List" />
     <meta property="og:description"
         content="A list of the hardest platformer levels" />
-    <meta property="og:url" content="https://tsl.pages.dev" />
-    <meta property="og:image" content="/tsl_icon.png" />
+    <meta property="og:url" content="https://pl.pages.dev" />
+    <meta property="og:image" content="/pl_icon.png" />
     <title>Platformer List</title>
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/pl_icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@500;700&display=swap" rel="stylesheet" />
@@ -29,14 +29,11 @@
     <script type="module" src="/js/main.js"></script>
 </head>
 <body id="app">
-    <div class="root" :class="{ dark: store.dark, shitty: store.shitty }">
+    <div class="root" :class="{ dark: store.dark }">
         <header class="surface">
             <div class="logo">
-                <img v-if="store.shitty" src="assets/april-logo.png" alt="TSL Logo" />
-                <div v-else class="logo">
-                    <h2>TSL</h2>
-                    <p>v1.8.0</p>
-                </div>
+                <img src="pl_icon.png" style="height:3rem;margin-top:0.5rem;">
+                <p>v1.0.0</p>
             </div>
             <nav class="nav">
                 <router-link class="nav__tab" to="/">
