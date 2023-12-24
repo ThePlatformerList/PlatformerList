@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+.env
 deno.json
 
 node_modules/
