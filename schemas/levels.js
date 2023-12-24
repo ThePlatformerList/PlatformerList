@@ -13,7 +13,7 @@ const levelsSchema = new mongoose.Schema({
     creator: String,
     levelID: String,
     verifier: String,
-    record: worldRecordSchema
+    record: [worldRecordSchema]
 })
 
 module.exports = mongoose.model("levels", levelsSchema)
