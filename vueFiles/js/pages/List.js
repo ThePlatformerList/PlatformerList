@@ -40,13 +40,13 @@ export default {
             <div class="level-container surface">
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
-                    <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
+                    <LevelAuthors :author="level.author" :creators="level.creator" :verifier="level.verifier"></LevelAuthors>
                     <div class="packs" v-if="level.packs.length > 0">
                         <div v-for="pack in level.packs" class="tag" :style="{background:pack.colour}">
                             <p :style="{color:getFontColour(pack.colour)}">{{pack.name}}</p>
                         </div>
                     </div>
-                    <div v-if="level.showcase" class="tabs">
+                    <div v-if="level.ytcode" class="tabs">
                         <button class="tab type-label-lg" :class="{selected: !toggledShowcase}" @click="toggledShowcase = false">
                             <span class="type-label-lg">Verification</span>
                         </button>
@@ -57,12 +57,12 @@ export default {
                     <iframe class="video" id="videoframe" :src="video" frameborder="0"></iframe>
                     <ul class="stats">
                         <li>
-                            <div class="type-title-sm">Points when completed</div>
-                            <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
+                            <div class="type-title-sm">Base Points</div>
+                            <p>{{ score(selected + 1, 100, level.percentToQualify || 100) }}</p>
                         </li>
                         <li>
                             <div class="type-title-sm">ID</div>
-                            <p>{{ level.id }}</p>
+                            <p>{{ level.levelID }}</p>
                         </li>
                         <li>
                             <div class="type-title-sm">Password</div>
@@ -70,22 +70,17 @@ export default {
                         </li>
                     </ul>
                     <h2>Records</h2>
-                    <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
-                    <p v-else-if="selected +1 <= 150"><strong>100%</strong> or better to qualify</p>
-                    <p v-else>This level does not accept new records.</p>
+                    <p v-if="selected + 1 > 150">This level does not accept new records.</p>
                     <table class="records">
                         <tr v-for="record in level.records" class="record">
                             <td class="percent">
-                                <p>{{ record.percent }}%</p>
+                                <p>{{ record.time }}</p>
                             </td>
                             <td class="user">
-                                <a :href="record.link" target="_blank" class="type-label-lg">{{ record.user }}</a>
+                                <a :href="record.link" target="_blank" class="type-label-lg">{{ record.name }}</a>
                             </td>
                             <td class="mobile">
                                 <img v-if="record.mobile" :src="\`/assets/phone-landscape\${store?.dark ? '-dark' : ''}.svg\`" alt="Mobile">
-                            </td>
-                            <td class="hz">
-                                <p>{{ record.hz }}Hz</p>
                             </td>
                         </tr>
                     </table>
@@ -142,12 +137,12 @@ export default {
 			return this.list[this.selected][0];
 		},
 		video() {
-			if (!this.level.showcase) {
+			if (!this.level.ytcode) {
 				return embed(this.level.verification);
 			}
 
 			return embed(
-				this.toggledShowcase ? this.level.showcase : this.level.verification,
+				`https://youtu.be/${this.toggledShowcase ? this.level.ytcode : this.level.verification}`,
 			);
 		},
 	},
@@ -162,13 +157,6 @@ export default {
 				'Failed to load list. Retry in a few minutes or notify list staff.',
 			];
 		} else {
-			this.errors.push(
-				...this.list
-					.filter(([_, err]) => err)
-					.map(([_, err]) => {
-						return `Failed to load level. (${err}.json)`;
-					}),
-			);
 			if (!this.editors) {
 				this.errors.push('Failed to load list editors.');
 			}

@@ -10,10 +10,13 @@ const levelsSchema = new mongoose.Schema({
     position: Number,
     name: String,
     ytcode: String,
-    creator: String,
+    verification: String,
+    creator: [String],
+    password: String,
     levelID: String,
     verifier: String,
-    record: [worldRecordSchema]
+    author: String,
+    records: [worldRecordSchema]
 })
 
 module.exports = mongoose.model("levels", levelsSchema)
