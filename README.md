@@ -1,4 +1,4 @@
-# Welcome to the maintained Geometry Dash Shitty List repo!
+# Welcome to the maintained Geometry Dash Platformer List repo!
 
 # FAQ
 
