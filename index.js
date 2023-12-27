@@ -2,8 +2,6 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
-const levels = require("./schemas/levels")
-const leaderboard = require("./schemas/leaderboard")
 const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, {
