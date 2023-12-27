@@ -6,16 +6,15 @@ import { round, score } from './score.js';
 const dir = '/data';
 
 export async function fetchList() {
-    const listResult = await fetch(`${dir}/_list.json`);
+    const listResult = await fetch("/api/levels");
     const packResult = await fetch(`${dir}/_packlist.json`);
     try {
-        const list = await listResult.json();
+        const list = await listResult.json()
         const packsList = await packResult.json();
         return await Promise.all(
             list.map(async (path, rank) => {
-                const levelResult = await fetch(`${dir}/${path}.json`);
                 try {
-                    const level = await levelResult.json();
+                    const level = list[rank];
                     let packs = packsList.filter((x) =>
                         x.levels.includes(path)
                     );
@@ -25,7 +24,7 @@ export async function fetchList() {
                             packs,
                             path,
                             records: level.records.sort(
-                                (a, b) => b.percent - a.percent,
+                                (a, b) => a.time - b.time,
                             ),
                         },
                         null,
@@ -77,7 +76,7 @@ export async function fetchLeaderboard() {
         verified.push({
             rank: rank + 1,
             level: level.name,
-            score: score(rank + 1, 100, level.percentToQualify),
+            score: score(rank + 1, 100, level.percentToQualify || 100),
             link: level.verification,
             path: level.path
         });
@@ -85,8 +84,8 @@ export async function fetchLeaderboard() {
         // Records
         level.records.forEach((record) => {
             const user = Object.keys(scoreMap).find(
-                (u) => u.toLowerCase() === record.user.toLowerCase(),
-            ) || record.user;
+                (u) => u.toLowerCase() === record.name.toLowerCase(),
+            ) || record.name;
             scoreMap[user] ??= {
                 verified: [],
                 completed: [],
@@ -94,26 +93,14 @@ export async function fetchLeaderboard() {
                 packs: [],
                 path: level.path
             };
-            const { completed, progressed } = scoreMap[user];
-            if (record.percent === 100) {
+            const { completed } = scoreMap[user];
                 completed.push({
                     rank: rank + 1,
                     level: level.name,
-                    score: score(rank + 1, 100, level.percentToQualify),
+                    score: score(rank + 1, 100, level.percentToQualify | 100),
                     link: record.link,
                     path: level.path
                 });
-                return;
-            }
-
-            progressed.push({
-                rank: rank + 1,
-                level: level.name,
-                percent: record.percent,
-                score: score(rank + 1, record.percent, level.percentToQualify),
-                link: record.link,
-                path: level.path
-            });
         });
     });
 
