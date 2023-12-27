@@ -1,6 +1,5 @@
 const express = require("express")
 const levelsSchema = require("../schemas/levels")
-const leaderboardSchema = require("../schemas/leaderboard")
 const app = express.Router()
 
 app.get("/levels", async (req, res) => {
