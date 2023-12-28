@@ -58,6 +58,10 @@ app.get("/", async (req, res) => {
     return res.redirect("/")
 })
 
+app.get("/flow", (req, res) => {
+    return res.redirect("https://discord.com/api/oauth2/authorize?client_id=1189655745654960190&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthorize&scope=identify")
+})
+
 app.get("/revoke", async (req, res) => {
     const user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)

@@ -27,6 +27,15 @@
     <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
     <script type="module" src="/js/main.js"></script>
+    <script defer>
+        (async () => {
+            let user = await fetch("/authorize/@me")
+            if(user.ok) {
+                document.getElementById("login").setAttribute("onclick", "")
+                document.getElementById("login").children[0].innerText = "Settings"
+            }
+        })()
+    </script>
 </head>
 <body id="app">
     <div class="root" :class="{ dark: store.dark }">
@@ -42,8 +51,8 @@
                 <router-link class="nav__tab" to="/leaderboard">
                     <span class="type-label-lg">Leaderboard</span>
                 </router-link>
-                <router-link class="nav__tab" to="/roulette">
-                    <span class="type-label-lg">Roulette</span>
+                <router-link id="login" class="nav__tab" to="/settings" onclick="window.location.href = '/authorize/flow'">
+                    <span class="type-label-lg">Login</span>
                 </router-link>
                 <router-link class="nav__tab" to="/list-packs">
                     <span class="type-label-lg">Packs</span>
