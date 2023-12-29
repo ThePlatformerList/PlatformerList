@@ -1,4 +1,5 @@
 const express = require("express")
+const { default: mongoose, MongooseError } = require("mongoose")
 const levelsSchema = require("../schemas/levels")
 const authorizedSchema = require("../schemas/authorized")
 const submissionsSchema = require("../schemas/submissions")
@@ -76,7 +77,7 @@ app.route("/levels")
         }
         await levelsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
             $set: req.body.update
-        }, {session})
+        }, {session, runValidators: true})
     }, res)
 })
 .delete(authentication, async (req, res) => {
@@ -97,10 +98,56 @@ app.get("/levels/:levelID", async (req, res) => {
 
 app.route("/submissions")
 .get(authentication, async (req, res) => {
-    let submissions = await submissionsSchema.find({status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}})
-    return res.json(submissions)
+    let submissions = await submissionsSchema.aggregate([
+        {
+            $match: {status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}}
+        },
+            {
+              '$lookup': {
+                'from': 'levels', 
+                'localField': 'levelID', 
+                'foreignField': 'levelID', 
+                'as': 'level'
+              }
+            }, {
+              '$set': {
+                'level': {
+                  '$first': '$level'
+                }
+              }
+            }, {
+              '$project': {
+                'name': 1, 
+                'levelID': 1, 
+                'link': 1,
+                'raw': 1, 
+                'time': 1, 
+                'discord': 1, 
+                'comments': 1,
+                'status': 1, 
+                'level': {
+                  'position': '$level.position', 
+                  'name': '$level.name', 
+                  'ytcode': '$level.ytcode', 
+                  'author': '$level.author'
+                }
+              }
+            }
+          ])
+    let formatted_submissions = submissions.map(async e => {
+        if(!e.level.name) {
+            let re = await fetch(`https://gdbrowser.com/api/level/${e.levelID}`)
+            let data = await re.json()
+            e.level = {
+                name: data.name,
+                author: data.author
+            }
+        }
+        return e
+    })
+    return res.json(await Promise.all(formatted_submissions))
 })
-.delete(authentication, async (req, res) => {
+.patch(authentication, async (req, res) => {
     await createTransaction(async (session) => {
         let submission = await submissionsSchema.findOne({_id: new ObjectId(req.body.id)})
         if(!submission) throw new Error("Could not find the given submission Object ID")
@@ -111,17 +158,66 @@ app.route("/submissions")
                 }
             }, {session})
         }
-        submission.status = req.body.status
-        await submission.save({session})
-    })
+        await submissionsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
+            $set: {
+                status: req.body.status
+            }
+        }, {session})
+    }, res)
 })
 
 app.route("/submissions/@me")
 .get(async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
-    let submissions = await submissionsSchema.find({status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}, discord: user.id})
-    return res.json(submissions)
+    let submissions = await submissionsSchema.aggregate([
+        {
+            $match: {status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}, discord: user.id}
+        },
+            {
+              '$lookup': {
+                'from': 'levels', 
+                'localField': 'levelID', 
+                'foreignField': 'levelID', 
+                'as': 'level'
+              }
+            }, {
+              '$set': {
+                'level': {
+                  '$first': '$level'
+                }
+              }
+            }, {
+              '$project': {
+                'name': 1, 
+                'levelID': 1, 
+                'link': 1,
+                'raw': 1, 
+                'time': 1, 
+                'discord': 1, 
+                'comments': 1,
+                'status': 1, 
+                'level': {
+                  'position': '$level.position', 
+                  'name': '$level.name', 
+                  'ytcode': '$level.ytcode', 
+                  'author': '$level.author'
+                }
+              }
+            }
+          ])
+    let formatted_submissions = submissions.map(async e => {
+        if(!e.level.name) {
+            let re = await fetch(`https://gdbrowser.com/api/level/${e.levelID}`)
+            let data = await re.json()
+            e.level = {
+                name: data.name,
+                author: data.author
+            }
+        }
+        return e
+    })
+    return res.json(await Promise.all(formatted_submissions))
 })
 .patch(async (req, res) => {
     let user = await getUser(req, res)
@@ -129,23 +225,33 @@ app.route("/submissions/@me")
     await createTransaction(async (session) => {
         let submission = await submissionsSchema.findOne({_id: new ObjectId(req.body.id), discord: user.id})
         if(!submission) throw new Error("Could not find the given submission Object ID")
-        await submissionsSchema.updateOne({id: new ObjectId(req.body.id)}, [{
+        await submissionsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
           $set: {
             name: req.body.name || "$name",
-            level: req.body.level || "$level",
             levelID: req.body.levelID || "$levelID",
             link: req.body.link || "$link",
-            time: req.body.time || "$time"
+            raw: req.body.raw || "$raw",
+            time: req.body.time || "$time",
+            comments: req.body.comments ?? ""
           }  
-        }], {session})
-    })
+        }, {session, runValidators: true})
+    }, res)
 })
 .post(async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
     await createTransaction(async (session) => {
         await submissionsSchema.create([{...req.body, status: "pending", discord: user.id}], {session})
-    })
+    }, res)
+})
+.delete(async (req, res) => {
+    let user = await getUser(req, res)
+    if(user.status) return res.status(user.status).json(user.body)
+    await createTransaction(async (session) => {
+        let submission = await submissionsSchema.findById(req.body.id)
+        if(submission.status != "pending") throw new Error("You are not allowed to delete a record that isn't pending")
+        await submissionsSchema.deleteOne({_id: new ObjectId(req.body.id)}, {session})
+    }, res)
 })
 
 app.get("/user/:id", authentication, async (req, res) => {
