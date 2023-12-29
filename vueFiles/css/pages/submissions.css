@@ -1,0 +1,21 @@
+@media screen and (max-width: 950px) {
+    #submissions-content {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #submission-content {
+        flex-direction: column;
+    }
+}
+
+.inputs {
+    font-family: "Lexend Deca", sans-serif;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem;
+    background-color: #475a7b;
+    flex: 1;
+    color: white;
+}

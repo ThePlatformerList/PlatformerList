@@ -28,7 +28,7 @@ export default {
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;">
-                        <Btn>View my Submissions</Btn>
+                        <Btn @click.native.prevent="mySubmissions">View my Submissions</Btn>
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;" v-if="admin">
@@ -57,6 +57,9 @@ export default {
     methods: {
         logOut() {
             window.location.href = "/authorize/revoke"
+        },
+        mySubmissions() {
+            window.location.href = "/#/submissions/@me"
         }
     },
 };
