@@ -48,13 +48,21 @@ app.route("/levels")
             $gte: parseInt(req.query.start) || 0,
             $lte: parseInt(req.query.end) || Infinity
         }
-    })
+    }).sort({position: 1})
     res.json(levels)
 })
 .post(authentication, async (req, res) => {
     await createTransaction(async (session) => {
         let exists = await levelsSchema.exists({levelID: req.body.levelID})
         if(exists) throw new Error("A level with the same levelID already exists!")
+        delete req.body._id
+        await levelsSchema.updateMany({position: {$gte: req.body.position}}, [{
+            $set: {
+                position: {
+                    $add: ["$position", 1]
+                }
+            }
+        }], {session})
         await levelsSchema.create([req.body], {session})
     }, res)
 })
@@ -62,18 +70,23 @@ app.route("/levels")
     await createTransaction(async (session) => {
         let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)}).select("position")
         if(!exists) throw new Error("Could not find the given level")
-        if(req.body.update?.position) {
+        if(req.body.update?.position && req.body.update.position != exists.position) {
             await levelsSchema.updateMany({position: {$gte: Math.min(req.body.update.position, exists.position), $lte: Math.max(req.body.update.position, exists.position)}}, [{
                 $set: {
-                    $switch: {
-                        branches: [
-                            {case: {$gt: [exists.position, "$position"]}, then: {$add: ["$position", 1]}},
-                            {case: {$lt: [exists.position, "$position"]}, then: {$subtract: ["$position", 1]}}
-                        ],
-                        default: req.body.update.position
+                    position: {
+                        $switch: {
+                            branches: [
+                                {case: {$gt: [exists.position, "$position"]}, then: {$add: ["$position", 1]}},
+                                {case: {$lt: [exists.position, "$position"]}, then: {$subtract: ["$position", 1]}}
+                            ],
+                            default: req.body.update.position
+                        }
                     }
                 }
             }], {session})
+        }
+        if(req.body.update?.records) {
+            req.body.update.records.sort((a,b) => a.time - b.time)
         }
         await levelsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
             $set: req.body.update
@@ -82,8 +95,15 @@ app.route("/levels")
 })
 .delete(authentication, async (req, res) => {
     await createTransaction(async (session) => {
-        let exists = await levelsSchema.exists({_id: new ObjectId(req.body.id)})
+        let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)})
         if(!exists) throw new Error("Could not find the given Object ID")
+        await levelsSchema.updateMany({position: {$gt: exists.position}}, [{
+            $set: {
+                position: {
+                    $subtract: ["$position", 1]
+                }
+            }
+        }], {session})
         await levelsSchema.deleteOne({_id: new ObjectId(req.body.id)}, {session})
     }, res)
 })
@@ -98,9 +118,11 @@ app.get("/levels/:levelID", async (req, res) => {
 
 app.route("/submissions")
 .get(authentication, async (req, res) => {
+    let user = await getUser(req, res)
+    if(user.status) return res.status(user.status).json(user.body)
     let submissions = await submissionsSchema.aggregate([
         {
-            $match: {status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}}
+            $match: {status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}, discord: {$ne: user.id}}
         },
             {
               '$lookup': {
@@ -149,19 +171,19 @@ app.route("/submissions")
 })
 .patch(authentication, async (req, res) => {
     await createTransaction(async (session) => {
-        let submission = await submissionsSchema.findOne({_id: new ObjectId(req.body.id)})
+        let user = await getUser(req, res)
+        if(user.status) return res.status(user.status).json(user.body)
+        let submission = await submissionsSchema.exists({_id: new ObjectId(req.body.id), discord: {$ne: user.id}})
         if(!submission) throw new Error("Could not find the given submission Object ID")
         if(req.body.status == "accepted") {
-            await levelsSchema.updateOne({levelID: submission.levelID}, {
+            await levelsSchema.updateOne({levelID: req.body.levelID}, {
                 $push: {
-                    records: submission
+                    records: req.body
                 }
             }, {session})
         }
         await submissionsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
-            $set: {
-                status: req.body.status
-            }
+            $set: req.body
         }, {session})
     }, res)
 })

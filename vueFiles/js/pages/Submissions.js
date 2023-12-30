@@ -26,6 +26,7 @@ export default {
         </div>
         <br>
         <div style="display: grid; place-items: center;">
+        <div style="width: fit-content; border-radius: 20px; border: 1px solid; padding: 20px;">
         <div v-if="message">
             <h3 style="text-align: center;" v-if="message" style="width: min(1000px, 100%)">{{ message }}</h3>
             <br><br>
@@ -34,7 +35,7 @@ export default {
         <div style="display: flex; gap: 30px;" id="submissions-content">
         <div style="max-height: 500px; width: 300px; height: 100%; overflow-y: auto; display: flex; flex-direction: column;">
         <div v-for="(submission,i) in submissions" class="surface">
-            <div class="surface" style="border: 2px solid; padding: 10px;" @click.native.prevent="setSubmission(i)">
+            <div class="surface" style="padding: 10px; border: 1px solid;" @click.native.prevent="setSubmission(i)">
                 <h3>Submission #{{i+1}}</h3>
                 <br>
                 <p>By {{submission.name}}</p>
@@ -46,6 +47,8 @@ export default {
         <a :href="submission.level.video" target="_blank" class="video" v-if="submission.level.video">
             <img :src="getThumbnailFromId(getYoutubeIdFromUrl(submission.level.video))" alt="" width="200">
         </a>
+        <br>
+        <p>Status: {{submission.status}}</p>
         <br>
         <div v-if="submission.status != 'accepted'">
         <Btn @click.native.prevent="submitSubmission('accepted')">Accept</Btn>
@@ -63,13 +66,11 @@ export default {
         </div>
         <div style="display: grid; gap: 20px;">
             <h1>Submission #{{index+1}}</h1>
-            <p style="font-size: 30px;">{{submission.status}}</p>
-            <br>
-            <p style="font-size: 20px;">Submission by {{ submission.name }}</p>
+            <p style="font-size: 20px;">Submission by <input v-model="submission.name" class="inputs"/></p>
             <p>Discord ID: {{ submission.discord }}</p>
             <h2>{{ submission.level.position ? '(#' + submission.level.position + ')' : ''}} {{ submission.level.name }} by {{ submission.level.author }}</h2>
-            <p>ID: {{ submission.levelID }}</p>
-            <p>Time: {{ submission.time }} seconds</p>
+            <p>ID: <input v-model="submission.levelID" type="number" class="inputs"/></p>
+            <p>Time: <input v-model="submission.time" type="number" class="inputs"/> seconds</p>
             <div class="tabs">
             <button class="tab type-label-lg" :class="{selected: !toggledRaw}" @click="toggledRaw = false">
             <span class="type-label-lg">Video</span>
@@ -79,7 +80,10 @@ export default {
         </button>
                     </div>
                     <iframe class="video" id="videoframe" :src="video()" frameborder="0" width="300px"></iframe>
-                    <p>Comments: {{ submission.comments || "No comments were provided." }}</p>
+                    <p v-if="this.toggledRaw">Raw: <textarea :defaultValue='submission.raw' v-model="submission.raw" class="inputs"/></p>
+                    <p v-else>Link: <textarea :defaultValue='submission.link' v-model="submission.link" class="inputs"/></p>
+                    <p>Comments: <textarea v-model="submission.comments" class="inputs"/></p>
+        </div>
         </div>
         </div>
     </div>
@@ -113,6 +117,22 @@ export default {
         getThumbnailFromId,
         getYoutubeIdFromUrl,
         async submitSubmission(status) {
+               let confirm = await Swal.fire({
+                    title: "Confirm?",
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Continue',
+                    denyButtonText: 'Cancel',
+                    html: `
+                        <div style="overflow: hidden">
+                        <h3 style="text-align: center">Submission for level ${this.submission.level.name} by ${this.submission.level.author} (${this.submission.levelID}) from ${this.submission.name}</h3>
+                        <br>
+                        <p style="text-align: center">Status: ${this.submission.status} => ${status}</p>
+                        <br>
+                        </div>
+                    `
+                })
+            if(confirm.isDenied) return;
             this.message = "Sending to server..."
             let req = await fetch("/api/submissions", {
                 method: "PATCH",
@@ -121,6 +141,7 @@ export default {
                 },
                 body: JSON.stringify({
                     id: this.submission._id.toString(),
+                    ...this.submission,
                     status
                 })
             })
