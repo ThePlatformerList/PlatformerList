@@ -26,15 +26,16 @@ export default {
         </div>
         <br>
         <div style="display: grid; place-items: center;">
+        <div style="width: fit-content; border-radius: 20px; border: 1px solid; padding: 20px;">
         <div v-if="message">
-            <h3 style="text-align: center;" v-if="message" style="width: min(1000px, 100%)">{{ message }}</h3>
+            <h3 v-if="message" style="text-align: center;">{{ message }}</h3>
             <br><br>
         </div>
         <h2 style="text-align: center;" v-if="submissions && !submissions.length">No submissions currently.</h2>
         <div style="display: flex; gap: 30px;" id="submissions-content">
         <div style="max-height: 500px; width: 300px; height: 100%; overflow-y: auto; display: flex; flex-direction: column;">
         <div v-for="(submission,i) in submissions" class="surface">
-            <div class="surface" style="border: 2px solid; padding: 10px;" @click.native.prevent="setSubmission(i)">
+            <div class="surface" style="border: 1px solid; padding: 10px;" @click.native.prevent="setSubmission(i)">
                 <h3>Submission #{{i+1}}</h3>
                 <br>
                 <p>By {{submission.name}}</p>
@@ -47,6 +48,8 @@ export default {
             <img :src="getThumbnailFromId(getYoutubeIdFromUrl(submission.level.video))" alt="" width="200">
         </a>
         <br>
+        <p>Status: {{submission.status}}</p>
+        <br>
             <div v-if="submission.status == 'pending'">
                 <Btn @click.native.prevent="editSubmission()">Submit</Btn>
                 <br>
@@ -56,8 +59,6 @@ export default {
         </div>
         <div style="display: grid; gap: 20px;">
             <h1>Submission #{{index+1}}</h1>
-            <p style="font-size: 30px;">{{submission.status}}</p>
-            <br>
             <p style="font-size: 20px;">Submission by <input v-model="submission.name" class="inputs" :disabled="submission.status != 'pending'"/></p>
             <p>Discord ID: {{ submission.discord }}</p>
             <h2>{{ submission.level.position ? '(#' + submission.level.position + ')' : ''}} {{ submission.level.name }} by {{ submission.level.author }}</h2>
@@ -72,8 +73,10 @@ export default {
         </button>
                     </div>
                     <iframe class="video" id="videoframe" :src="video()" frameborder="0" width="300px"></iframe>
-                    <p>Link: <textarea :defaultValue='this.toggledRaw ? submission.raw : submission.link' v-model="this.toggledRaw ? submission.raw : submission.link" class="inputs" :disabled="submission.status != 'pending'"/></p>
+                    <p v-if="this.toggledRaw">Raw: <textarea :defaultValue='submission.raw' v-model="submission.raw" class="inputs" :disabled="submission.status != 'pending'"/></p>
+                    <p v-else>Link: <textarea :defaultValue='submission.link' v-model="submission.link" class="inputs" :disabled="submission.status != 'pending'"/></p>
                     <p>Comments: <textarea v-model="submission.comments" class="inputs" :disabled="submission.status != 'pending'"/></p>
+        </div>
         </div>
         </div>
     </div>

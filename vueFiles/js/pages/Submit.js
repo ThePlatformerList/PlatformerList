@@ -16,12 +16,15 @@ export default {
         </div>
     </main>
         <main class="page-roulette" v-else>
-            <div class="surface" style="display: grid; place-items: center; width: 100vw">
-                <div style="width: min(450px, 100%); box-shadow: 10px; padding: 5px;">
-                <h3 style="text-align: center;" v-if="message">{{ message }}</h3>
-                <br><br>
+            <div class="surface" style="display: grid; place-items: center; width: 100vw; margin-top: 50px;">
+                <div style="width: min(450px, 100%); box-shadow: 10px; padding: 10px;">
                 <h1 style="text-align: center;">Submit a record</h1>
+                <div v-if="message">
                 <br><br>
+                <h3 style="text-align: center;" v-if="message">{{ message }}</h3>
+                </div>
+                <br><br>
+                <div style="border: 1px solid; border-radius: 20px; padding: 20px;">
                     <h3>Name</h3>
                     <input v-model="submission.name" class="inputs" style="margin-top: 10px;" placeholder="name..."/>
                     <br><br>
@@ -42,6 +45,7 @@ export default {
                     <br><br>
                 <br>
                 <Btn @click.native.prevent="submit">Submit</Btn>
+                </div>
                 </div>
             </div>
         </main>
@@ -84,6 +88,7 @@ export default {
                     this.message = `Successfully submitted.`
                     setTimeout(() => {
                         this.message = ""
+                        window.location.href = "/#/submissions/@me"
                     }, 3000)
             } else {
                 let data = await req.json()
