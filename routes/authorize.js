@@ -42,7 +42,7 @@ app.get("/", async (req, res) => {
         body: new URLSearchParams({
             grant_type: "authorization_code",
             code: req.query.code,
-            redirect_uri: "http://localhost:3000/authorize",
+            redirect_uri: process.env.redirect,
             scope: 'identify',
             client_id: process.env.CLIENT_ID,
             client_secret: process.env.CLIENT_SECRET
@@ -59,7 +59,7 @@ app.get("/", async (req, res) => {
 })
 
 app.get("/flow", (req, res) => {
-    return res.redirect("https://discord.com/api/oauth2/authorize?client_id=1189655745654960190&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthorize&scope=identify")
+    return res.redirect(`https://discord.com/api/oauth2/authorize?client_id=1189655745654960190&response_type=code&redirect_uri=${process.env.redirect}&scope=identify`)
 })
 
 app.get("/revoke", async (req, res) => {
