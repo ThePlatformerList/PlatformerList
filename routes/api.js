@@ -144,6 +144,7 @@ app.route("/submissions")
             }, {
               '$project': {
                 'name': 1, 
+                'date': 1, 
                 'levelID': 1, 
                 'link': 1,
                 'raw': 1, 
@@ -223,7 +224,8 @@ app.route("/submissions/@me")
               }
             }, {
               '$project': {
-                'name': 1, 
+                'name': 1,
+                'date': 1, 
                 'levelID': 1, 
                 'link': 1,
                 'raw': 1, 
@@ -238,6 +240,11 @@ app.route("/submissions/@me")
                   'author': '$level.author'
                 }
               }
+            },
+            {
+                '$sort': {
+                    'date': 1
+                }
             }
           ])
     let formatted_submissions = submissions.map(async e => {
