@@ -44,15 +44,25 @@ export default {
             <br>
             <p v-if="admin.global_name">{{admin.username}}</p>
         <br><br>
+        <select v-model="admin.type" class="inputs" :disabled="perms == 0">
+                <option value="mod"class="inputs">Moderator</option>
+                <option value="admin" class="inputs">Administrator</option>
+                <option value="owner" class="inputs">Owner</option>
+            </select>
+            <br><br>
         </div>
         <div v-if="admin.draft">
-            <textarea v-model="admin.id" class="inputs" @input.native.prevent="reloadAdmin"/>
+            <textarea v-model="admin.id" class="inputs" @input.native.prevent="reloadAdmin" :disabled="perms == 0"/>
             <br><br>
-            <Btn @click.native.prevent="addAdmin()" v-if="admin.username">Add</Btn>
+            <Btn @click.native.prevent="addAdmin()" v-if="admin.username" :disabled="perms == 0">Add</Btn>
             <br><br>
-            <Btn style="background-color: #e91e63;" @click.native.prevent="deleteAdminDraft()" v-else>Delete Draft</Btn>
+            <Btn style="background-color: #e91e63;" @click.native.prevent="deleteAdminDraft()" :disabled="perms == 0">Delete Draft</Btn>
         </div>
-            <Btn style="background-color: #e91e63;" @click.native.prevent="deleteAdmin()" v-else>Delete</Btn>
+            <div v-else>
+            <Btn @click.native.prevent="editAdmin()" v-if="admin.username" :disabled="perms == 0">Save</Btn>
+            <br><br>
+            <Btn style="background-color: #e91e63;" @click.native.prevent="deleteAdmin()" v-else :disabled="perms == 0">Delete</Btn>
+            </div>
         </div>
     </div>
 </div>
@@ -65,9 +75,14 @@ export default {
         admins: undefined,
         admin: undefined,
         index: 0,
+        perms: 0,
         message: ""
     }),
     async mounted() {
+        let admin = await fetch("/api/admin")
+        if(!admin.ok) return;
+        let data2 = await admin.json()
+        this.perms = data2.type
         let req = await fetch("/api/admins")
         let data = await req.json()
         if (req.ok) {
@@ -77,6 +92,7 @@ export default {
                 e.avatar = e.avatar ? `https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.${e.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(e.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(e.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(e.discriminator) % 5}.png`
                 return e
             })
+            console.log(this.admins)
         }
     },
     computed: {
@@ -93,6 +109,7 @@ export default {
             this.admin = { ... this.admins[0] }
         },
         async deleteAdminDraft() {
+            if(this.perms == 0) return;
             let confirm = await Swal.fire({
                 title: "Confirm?",
                 showDenyButton: true,
@@ -112,6 +129,7 @@ export default {
             this.admin = undefined
         },
         async addAdmin() {
+            if(this.perms == 0) return;
             let confirm = await Swal.fire({
                 title: "Confirm?",
                 showDenyButton: true,
@@ -133,7 +151,8 @@ export default {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: this.admin.id
+                    id: this.admin.id,
+                    type: this.admin.type
                 })
             })
             if (req.ok) {
@@ -147,7 +166,57 @@ export default {
                         e.avatar = e.avatar ? `https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.${e.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(e.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(e.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(e.discriminator) % 5}.png`
                         return e
                     })
-                    this.message = `Successfully added admin.`
+                    this.message = `Successfully added user.`
+                    this.index = this.admins.findIndex(e => e.id== this.admin.id)
+                    this.admin = { ...this.admins[this.index] }
+                    setTimeout(() => {
+                        this.message = ""
+                    }, 3000)
+                }
+            } else {
+                let data = await req.json()
+                this.message = data.message
+            }
+        },
+        async editAdmin() {
+            if(this.perms == 0) return;
+            let confirm = await Swal.fire({
+                title: "Confirm?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Continue',
+                denyButtonText: 'Cancel',
+                html: `
+                    <div style="overflow: hidden">
+                    <h3 style="text-align: center">Edit admin ${this.admin.global_name || this.admin.username} (${this.admin.id}) perms to ${this.admin.type}</h3>
+                    <br>
+                    </div>
+                `
+            })
+        if(confirm.isDenied) return;
+            this.message = "Sending to server..."
+            let req = await fetch("/api/admins", {
+                method: "PATCH",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: this.admin.id,
+                    type: this.admin.type
+                })
+            })
+            if (req.ok) {
+                this.message = "Fetching new information..."
+                let req = await fetch("/api/admins")
+                let data = await req.json()
+                if (req.ok) {
+                    this.admins = data.map(e => {
+                        e.username = e.global_name ? e.username : `${e.username}#${e.discriminator}`
+                        e.banner = e.banner ? `https://cdn.discordapp.com/banners/${e.id}/${e.banner}.${e.banner.startsWith("a_") ? "gif" : "png"}` : null
+                        e.avatar = e.avatar ? `https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.${e.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(e.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(e.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(e.discriminator) % 5}.png`
+                        return e
+                    })
+                    this.message = `Successfully edited user.`
                     this.index = this.admins.findIndex(e => e.id== this.admin.id)
                     this.admin = { ...this.admins[this.index] }
                     setTimeout(() => {
@@ -160,6 +229,7 @@ export default {
             }
         },
         async deleteAdmin() {
+            if(this.perms == 0) return;
             let confirm = await Swal.fire({
                 title: "Confirm?",
                 showDenyButton: true,
@@ -195,7 +265,7 @@ export default {
                         e.avatar = e.avatar ? `https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.${e.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(e.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(e.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(e.discriminator) % 5}.png`
                         return e
                     })
-                    this.message = `Successfully deleted admin.`
+                    this.message = `Successfully deleted user.`
                     this.index = 0
                     this.admin = undefined
                     setTimeout(() => {
@@ -208,6 +278,7 @@ export default {
             }
         },
         async reloadAdmin({target}) {
+            if(this.perms == 0) return;
             let req = await fetch(`/api/user/${target.value}`)
             let e = await req.json()
             if (req.ok) {

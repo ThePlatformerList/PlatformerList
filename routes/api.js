@@ -7,12 +7,16 @@ const {getUser} = require("./authorize")
 const { ObjectId } = require("bson")
 const app = express.Router()
 
-async function authentication(req, res, next) {
-    let user = await getUser(req, res)
-    if(user.status) return res.status(user.status).json(user.body)
-    let authorized = await authorizedSchema.exists({authorized: {$elemMatch: {$eq: user.id}}})
-    if(authorized) return next()
-    return res.status(401).json({error: "401 UNAUTHORIZED", message: `You are not allowed to ${req.method} to /api${req.path}.`})
+let userTypes = ["mod", "admin", "owner"]
+
+function authentication(type) {
+    return async (req, res, next) => {
+        let user = await getUser(req, res)
+        if(user.status) return res.status(user.status).json(user.body)
+        let authorized = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: user.id}}}})
+        if(authorized && userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) >= userTypes.indexOf(type)) return next()
+        return res.status(401).json({error: "401 UNAUTHORIZED", message: `You are not allowed to ${req.method} to /api${req.path}.`})
+    }
 }
 
 async function createTransaction(cb, res) {
@@ -51,10 +55,12 @@ app.route("/levels")
     }).sort({position: 1})
     res.json(levels)
 })
-.post(authentication, async (req, res) => {
+.post(authentication("admin"), async (req, res) => {
     await createTransaction(async (session) => {
         let exists = await levelsSchema.exists({levelID: req.body.levelID})
         if(exists) throw new Error("A level with the same levelID already exists!")
+        let documents = await levelsSchema.countDocuments()
+        if(!Number.isInteger(req.body.position) || 0 >= req.body.position || documents+1 < req.body.position) throw new Error("Path 'position': Invalid range")
         delete req.body._id
         await levelsSchema.updateMany({position: {$gte: req.body.position}}, [{
             $set: {
@@ -66,11 +72,13 @@ app.route("/levels")
         await levelsSchema.create([req.body], {session})
     }, res)
 })
-.patch(authentication, async (req, res) => {
+.patch(authentication("admin"), async (req, res) => {
     await createTransaction(async (session) => {
         let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)})
         if(!exists) throw new Error("Could not find the given level")
         if(req.body.update?.position && req.body.update.position != exists.position) {
+            let documents = await levelsSchema.countDocuments()
+            if(!Number.isInteger(req.body.update.position) || 0 >= req.body.update.position || documents < req.body.update.position) throw new Error("Path 'position': Invalid range")
             await levelsSchema.updateMany({position: {$gte: Math.min(req.body.update.position, exists.position), $lte: Math.max(req.body.update.position, exists.position)}}, [{
                 $set: {
                     position: {
@@ -97,7 +105,7 @@ app.route("/levels")
         }, {session, runValidators: true})
     }, res)
 })
-.delete(authentication, async (req, res) => {
+.delete(authentication("admin"), async (req, res) => {
     await createTransaction(async (session) => {
         let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)})
         if(!exists) throw new Error("Could not find the given Object ID")
@@ -121,7 +129,7 @@ app.get("/levels/:levelID", async (req, res) => {
 })
 
 app.route("/submissions")
-.get(authentication, async (req, res) => {
+.get(authentication("mod"), async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
     let submissions = await submissionsSchema.aggregate([
@@ -179,7 +187,7 @@ app.route("/submissions")
     })
     return res.json(await Promise.all(formatted_submissions))
 })
-.patch(authentication, async (req, res) => {
+.patch(authentication("mod"), async (req, res) => {
     await createTransaction(async (session) => {
         let user = await getUser(req, res)
         if(user.status) return res.status(user.status).json(user.body)
@@ -296,45 +304,102 @@ app.route("/submissions/@me")
     }, res)
 })
 
-app.get("/user/:id", authentication, async (req, res) => {
+app.get("/user/:id", authentication("admin"), async (req, res) => {
     let request = await fetch(`https://discord.com/api/v10/users/${req.params.id}`, {headers: {authorization: `Bot ${process.env.BOT_TOKEN}`}})
     if(!request.ok) return res.status(400).json({error: "400 BAD REQUEST", message: `Not a valid discord user ID!`})
     let data = await request.json()
     return res.json(data)
 })
 
-app.get("/admin", authentication, async (req, res) => {
-    res.sendStatus(200)
+app.get("/admin", authentication("mod"), async (req, res) => {
+    let user = await getUser(req, res)
+    if(user.status) return res.status(user.status).json(user.body)
+    let databaseUser = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: user.id}}}})
+    res.status(200).send({type: userTypes.indexOf(databaseUser.authorized.find(e => e.id == user.id).type)})
 })
 
 app.route("/admins")
-.get(authentication, async (req, res) => {
+.get(authentication("admin"), async (req, res) => {
     let admins = await authorizedSchema.findOne()
     let users = admins.authorized.map(async e => {
-        let request = await fetch(`https://discord.com/api/v10/users/${e}`, {headers: {authorization: `Bot ${process.env.BOT_TOKEN}`}})
+        let request = await fetch(`https://discord.com/api/v10/users/${e.id}`, {headers: {authorization: `Bot ${process.env.BOT_TOKEN}`}})
         let data = await request.json()
-        return data
+        return {
+            ...data,
+            type: e.type
+        }
     })
     res.json(await Promise.all(users))
 })
-.post(authentication, async (req, res) => {
+.post(async (req, res, next) => {
     await createTransaction(async (session) => {
-        let exists = await authorizedSchema.exists({authorized: {$elemMatch: {$eq: req.body.id}}})
-        if(exists) throw new Error("This user is already an admin!")
+        let exists = await authorizedSchema.exists({authorized: {$elemMatch: {id: {$eq: req.body.id}}}})
+        if(exists) throw new Error("This user already exists!")
+        let user = await getUser(req, res)
+            if(user.status) return res.status(user.status).json(user.body)
+            let authorized = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: user.id}}}})
+            if(userTypes.indexOf(authorized?.authorized?.find(e => e?.id == user?.id)?.type) != userTypes.length-1) {
+                if(!authorized || userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) <= userTypes.indexOf(req.body.type)) throw new Error(`You are not allowed to add a user that is ${req.body.type}.`)
+            }
         await authorizedSchema.updateOne({}, {
             $push: {
-                authorized: req.body.id
+                authorized: req.body
             }
         }, {session})
     }, res)
 })
-.delete(authentication, async (req, res) => {
+.patch(async (req, res, next) => {
+    if(!userTypes.includes(req.body.type)) throw new Error("Invalid type")
     await createTransaction(async (session) => {
-        let exists = await authorizedSchema.exists({authorized: {$elemMatch: {$eq: req.body.id}}})
-        if(!exists) throw new Error("This user is not an admin!")
+        let exists = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: req.body.id}}}})
+    if(!exists) throw new Error("This user does not exist!")
+    let otherUser = exists.authorized.find(e => e.id == req.body.id).type
+    let user = await getUser(req, res)
+        if(user.status) return res.status(user.status).json(user.body)
+        let authorized = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: user.id}}}})
+        if(userTypes.indexOf(authorized?.authorized?.find(e => e?.id == user?.id)?.type) != userTypes.length-1) {
+            if(!authorized || userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) <= userTypes.indexOf(req.body.type) || userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) <= userTypes.indexOf(otherUser)) throw new Error(`You are not allowed to edit this user to ${req.body.type}.`)
+        }
+        await authorizedSchema.updateOne({}, [
+            {
+              $set: {
+                "authorized": {
+                  $concatArrays: [
+                    {
+                      $filter: {
+                        input: "$authorized",
+                        cond: { $ne: ["$$this.id", req.body.id] },
+                      },
+                    },
+                    [{
+                        id: req.body.id,
+                        type: req.body.type
+                    }],
+                  ],
+                },
+              },
+            },
+          ], {session, runValidators: true})
+    }, res)
+})
+.delete(async (req, res, next) => {
+    await createTransaction(async (session) => {
+        let exists = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: req.body.id}}}})
+    if(!exists) throw new Error("This user does not exist!")
+    let otherUser = exists.authorized.find(e => e.id == req.body.id).type
+    let user = await getUser(req, res)
+        if(user.status) return res.status(user.status).json(user.body)
+        let authorized = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: user.id}}}})
+        if(userTypes.indexOf(authorized?.authorized?.find(e => e?.id == user?.id)?.type) != userTypes.length-1) {
+            if(!authorized || userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) <= userTypes.indexOf(otherUser)) throw new Error(`You are not allowed to edit this user to ${req.body.type}.`)
+        }
         await authorizedSchema.updateOne({}, {
             $pull: {
-                authorized: req.body.id
+                authorized: {
+                    id: {
+                        $eq: req.body.id
+                    }
+                }
             }
         }, {session})
     }, res)

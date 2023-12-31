@@ -20,22 +20,25 @@ export default {
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;">
-                        <Btn @click.native.prevent="listEditor">List Editor</Btn>
+                        <Btn @click.native.prevent="listEditor" v-if="perms > 0">List Editor</Btn>
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;">
-                        <Btn @click.native.prevent="adminEditor">Admin Editor</Btn>
+                        <Btn @click.native.prevent="adminEditor" v-if="perms > 0">Admin Editor</Btn>
                     </div>
                 </div>
             </div>
         </main>
     `,
     data: () => ({
-        loading: true
+        loading: true,
+        perms: 0
     }),
     async mounted() {
         let admin = await fetch("/api/admin")
         if(!admin.ok) return;
+        let data = await admin.json()
+        this.perms = data.type
         this.loading = false
     },
     methods: {

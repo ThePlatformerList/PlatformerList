@@ -27,7 +27,7 @@ export default {
         <div style="max-height: 500px; width: 300px; height: 100%; overflow-y: auto; display: flex; flex-direction: column;">
         <div v-for="(lev,i) in levels" class="surface">
             <div class="surface" style="border: 1px solid; padding: 10px;" @click.native.prevent="setLevel(i)">
-                <h3>#{{lev.position}}: {{lev.name}}</h3>
+                <h3>#{{ i + 1 }}: {{lev.name}}</h3>
                 <br>
                 <p>By {{lev.author}}</p>
                 <br>
