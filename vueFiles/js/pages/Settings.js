@@ -13,7 +13,7 @@ export default {
         <main v-else class="page-roulette">
             <div class="surface" style="display: grid; place-items: center; width: 100vw">
 
-                <div style="width: min(450px, 100%); box-shadow: 10px; padding: 5px;">
+                <div style="width: min(450px, 100%); box-shadow: 10px; padding: 40px; border: 1px solid; border-radius: 20px;">
                 <h1 style="text-align: center;">Logged in as:</h1>
                 <br>
                     <img :src="user.banner" style="width: 100%" v-if="user.banner"/>
@@ -32,7 +32,7 @@ export default {
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;" v-if="admin">
-                        <Btn>Admin Page</Btn>
+                        <Btn @click.native.prevent="adminPanel">Admin Page</Btn>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@ export default {
             this.user = data
             this.user.username = data.global_name ? data.username : `${data.username}#${data.discriminator}`
             this.user.banner = data.banner ? `https://cdn.discordapp.com/banners/${data.id}/${data.banner}.${data.banner.startsWith("a_") ? "gif" : "png"}` : null
-            this.user.avatar = data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(data.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(data.discriminator) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(data.id) % 5}.png`
+            this.user.avatar = data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(data.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(data.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(data.discriminator) % 5}.png`
         }
     },
     methods: {
@@ -60,6 +60,9 @@ export default {
         },
         mySubmissions() {
             window.location.href = "/#/submissions/@me"
+        },
+        adminPanel() {
+            window.location.href = "/#/adminpanel"
         }
     },
 };

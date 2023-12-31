@@ -12,6 +12,10 @@ const worldRecordSchema = new mongoose.Schema({
     time: {
         type: Number,
         required: true
+    },
+    date: {
+        type: Number,
+        required: true
     }
 })
 
