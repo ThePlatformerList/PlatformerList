@@ -2,6 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
+const authorized = require("./schemas/authorized")
 const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, {
@@ -26,6 +27,14 @@ app.use(express.static("vueFiles"))
 
 app.listen(process.env.PORT, async () => {
     console.log("Listening on port 3000")
+    // let admins = await authorized.findOne().lean()
+    // admins.authorized = admins.authorized.map(e => {
+    //     return {
+    //         id: e,
+    //         type: "admin"
+    //     }
+    // })
+    // console.log(JSON.stringify(admins))
     // let rec = await levels.create({
     //     position: 1,
     //     name: "LMFAO",
