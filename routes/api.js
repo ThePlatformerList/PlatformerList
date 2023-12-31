@@ -68,7 +68,7 @@ app.route("/levels")
 })
 .patch(authentication, async (req, res) => {
     await createTransaction(async (session) => {
-        let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)}).select("position")
+        let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)})
         if(!exists) throw new Error("Could not find the given level")
         if(req.body.update?.position && req.body.update.position != exists.position) {
             await levelsSchema.updateMany({position: {$gte: Math.min(req.body.update.position, exists.position), $lte: Math.max(req.body.update.position, exists.position)}}, [{
@@ -87,6 +87,10 @@ app.route("/levels")
         }
         if(req.body.update?.records) {
             req.body.update.records.sort((a,b) => a.time - b.time)
+            req.body.update.records.map(e => {
+                e.date = exists.records.find(x => x.link == e.link)?.date || Date.now()
+                return e
+            })
         }
         await levelsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
             $set: req.body.update
@@ -154,6 +158,11 @@ app.route("/submissions")
                   'author': '$level.author'
                 }
               }
+            },
+            {
+                '$sort': {
+                    'date': 1
+                }
             }
           ])
     let formatted_submissions = submissions.map(async e => {
@@ -178,7 +187,10 @@ app.route("/submissions")
         if(req.body.status == "accepted") {
             await levelsSchema.updateOne({levelID: req.body.levelID}, {
                 $push: {
-                    records: req.body
+                    records: {
+                        ...req.body,
+                        date: Date.now()
+                    }
                 }
             }, {session})
         }
@@ -247,6 +259,7 @@ app.route("/submissions/@me")
     await createTransaction(async (session) => {
         let submission = await submissionsSchema.findOne({_id: new ObjectId(req.body.id), discord: user.id})
         if(!submission) throw new Error("Could not find the given submission Object ID")
+        if(submission.status != "pending") throw new Error("You are not allowed to edit a record that isn't pending")
         await submissionsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
           $set: {
             name: req.body.name || "$name",
@@ -263,7 +276,7 @@ app.route("/submissions/@me")
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
     await createTransaction(async (session) => {
-        await submissionsSchema.create([{...req.body, status: "pending", discord: user.id}], {session})
+        await submissionsSchema.create([{...req.body, status: "pending", discord: user.id, date: Date.now()}], {session})
     }, res)
 })
 .delete(async (req, res) => {
@@ -277,7 +290,7 @@ app.route("/submissions/@me")
 })
 
 app.get("/user/:id", authentication, async (req, res) => {
-    let request = await fetch(`https://discord.com/api/v10/users/${e}`, {headers: {authorization: `Bot ${process.env.BOT_TOKEN}`}})
+    let request = await fetch(`https://discord.com/api/v10/users/${req.params.id}`, {headers: {authorization: `Bot ${process.env.BOT_TOKEN}`}})
     if(!request.ok) return res.status(400).json({error: "400 BAD REQUEST", message: `Not a valid discord user ID!`})
     let data = await request.json()
     return res.json(data)

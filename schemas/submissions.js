@@ -42,6 +42,10 @@ const submissionsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    date: {
+        type: Number,
+        required: true
+    },
     discord: {
         type: String,
         required: true

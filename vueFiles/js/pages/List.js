@@ -71,8 +71,16 @@ export default {
                     </ul>
                     <h2>Records</h2>
                     <p v-if="selected + 1 > 150">This level does not accept new records.</p>
+                    <div class="tabs">
+            <button class="tab type-label-lg" :class="{selected: sortByTime}" @click="sortByTime = true">
+            <span class="type-label-lg">Time</span>
+        </button>
+        <button class="tab" :class="{selected: !sortByTime}" @click="sortByTime = false">
+            <span class="type-label-lg">Date</span>
+        </button>
+                    </div>
                     <table class="records">
-                        <tr v-for="record in level.records" class="record">
+                        <tr v-for="record in level.records.sort((a,b) => (sortByTime ? a.time : a.date) - (sortByTime ? b.time : b.date))" class="record">
                             <td class="percent">
                                 <p>{{ record.time }}</p>
                             </td>
@@ -130,6 +138,7 @@ export default {
 		errors: [],
 		roleIconMap,
 		store,
+        sortByTime: true,
 		toggledShowcase: false,
 	}),
 	computed: {

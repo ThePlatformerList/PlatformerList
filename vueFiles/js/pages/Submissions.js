@@ -169,6 +169,7 @@ export default {
         },
         async setSubmissions(archived) {
             if (archived == this.archived) return;
+            this.message = "Loading..."
             this.archived = archived
             let req = await fetch(`/api/submissions${archived ? "?archived=true" : ""}`)
             let data = await req.json()
@@ -179,6 +180,7 @@ export default {
                 })
                 this.submission = undefined
                 this.index = 0
+                this.message = ""
             }
         },
         setSubmission(i) {

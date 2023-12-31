@@ -37,8 +37,8 @@ export default {
         </div>
         <div style="display: flex; gap: 20px; width: min(1000px, 100%);" id="submission-content" v-if="level">
         <div style="display: block;">
-        <a :href="level.video" target="_blank" class="video">
-            <img :src="getThumbnailFromId(getYoutubeIdFromUrl(level.video))" alt="" width="200">
+        <a :href="'https://youtu.be/' + level.ytcode" target="_blank" class="video">
+            <img :src="getThumbnailFromId(getYoutubeIdFromUrl('https://youtu.be/' + level.ytcode))" alt="" width="200">
         </a>
         <br>
                 <div v-if="!level?.draft">
@@ -111,10 +111,7 @@ export default {
         let req = await fetch("/api/levels")
         let data = await req.json()
         if (req.ok) {
-            this.levels = data.map(e => {
-                e.video = `https://youtu.be/${e.ytcode || ""}`
-                return e
-            })
+            this.levels = data
         }
     },
     computed: {
@@ -211,12 +208,9 @@ export default {
                 let req = await fetch("/api/levels")
                 let data = await req.json()
                 if (req.ok) {
-                    this.levels = data.map(e => {
-                        e.video = `https://youtu.be/${e.ytcode || ""}`
-                        return e
-                    })
+                    this.levels = data
                     this.message = `Successfully added level.`
-                    this.level = this.levels.find(e => e.levelID.toString() == this.level.levelID.toString())
+                    this.level = { ...this.levels[this.levels.findIndex(e => e.levelID.toString() == this.level.levelID.toString())] }
                     setTimeout(() => {
                         this.message = ""
                     }, 3000)
@@ -256,10 +250,7 @@ export default {
                 let req = await fetch("/api/levels")
                 let data = await req.json()
                 if (req.ok) {
-                    this.levels = data.map(e => {
-                        e.video = `https://youtu.be/${e.ytcode || ""}`
-                        return e
-                    })
+                    this.levels = data
                     this.level = undefined
                     this.message = `Successfully deleted level.`
                     setTimeout(() => {
@@ -304,13 +295,10 @@ export default {
                 let req = await fetch("/api/levels")
                 let data = await req.json()
                 if (req.ok) {
-                    let newLevels = data.map(e => {
-                        e.video = `https://youtu.be/${e.ytcode || ""}`
-                        return e
-                    })
+                    let newLevels = data
                     this.levels = newLevels
                     this.message = `Successfully updated level.`
-                    this.level = newLevels.find(e => e._id.toString() == this.level._id.toString())
+                    this.level = {...this.levels[this.levels.findIndex(e => e._id.toString() == this.level._id.toString())] }
                     setTimeout(() => {
                         this.message = ""
                     }, 3000)
