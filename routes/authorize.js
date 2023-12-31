@@ -59,7 +59,7 @@ app.get("/", async (req, res) => {
 })
 
 app.get("/flow", (req, res) => {
-    return res.redirect(`https://discord.com/api/oauth2/authorize?client_id=1189655745654960190&response_type=code&redirect_uri=${process.env.redirect}&scope=identify`)
+    return res.redirect(`https://discord.com/api/oauth2/authorize?client_id=1189655745654960190&response_type=code&redirect_uri=${encodeURIComponent(process.env.redirect)}&scope=identify`)
 })
 
 app.get("/revoke", async (req, res) => {
