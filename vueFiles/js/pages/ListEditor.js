@@ -89,7 +89,7 @@ export default {
                             <br>
                             <p>Time: <input :defaultValue='secondsToTime(record.time)' placeholder="hh:mm:ss.SSS" @input.native.prevent="({target}) => convertRecordTime(i, target.value)" class="inputs"/></p>
                             <br><br>
-                            <p>Date: <input :defaultValue="convertUnixToDate(i)" placeholder="mm/dd/yyyy HH:mm:ss.SSS" class="inputs" @input.native.prevent="({target}) => convertDateToUnix(i, target.value)"/></p>
+                            <p>Date: <textarea :defaultValue="convertUnixToDate(i)" placeholder="mm/dd/yyyy HH:mm:ss.SSS" class="inputs" @input.native.prevent="({target}) => convertDateToUnix(i, target.value)"/></p>
                         </div>
                         <br>
                     </div>
