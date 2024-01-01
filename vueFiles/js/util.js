@@ -17,6 +17,19 @@ export function getThumbnailFromId(id) {
     return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
 }
 
+export function secondsToTime(seconds) {
+    let hours = (seconds - seconds % 3600) / 3600
+    let minutes = (seconds - hours*3600 - seconds % 60) / 60
+    let secs = (seconds - hours*3600 - minutes*60).toFixed(3)
+    return `${hours ? `${hours < 10 ? 0 : ""}${hours}:` : ""}${minutes || hours ? `${minutes < 10 ? 0 : ""}${minutes}:` : ""}${secs < 10 ? 0 : ""}${secs}`
+}
+
+export function timeToSeconds(time) {
+    let multipliers = [1, 60, 3600]
+    let times = time.split(":").reverse().map((e, i) => parseFloat(e) * multipliers[i])
+    return times.reduce((acc, cur) => acc + cur).toFixed(3)
+}
+
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 export function shuffle(array) {
     let currentIndex = array.length, randomIndex;

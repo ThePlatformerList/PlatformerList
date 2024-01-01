@@ -1,5 +1,5 @@
 import { fetchList } from "../content.js";
-import { getThumbnailFromId, getYoutubeIdFromUrl, embed } from "../util.js";
+import { getThumbnailFromId, getYoutubeIdFromUrl, embed, timeToSeconds, secondsToTime } from "../util.js";
 
 import Spinner from "../components/Spinner.js";
 import Btn from "../components/Btn.js";
@@ -62,6 +62,7 @@ export default {
             <p style="font-size: 20px;">Password: <input v-model="level.password" class="inputs"/></p>
             <p style="font-size: 20px;">Creators: <textarea :defaultValue="level.creator.join(', ')" @input.native.prevent="updateCreators" class="inputs"/></p>
             <p style="font-size: 20px;">Verifier: <input v-model="level.verifier" class="inputs"/></p>
+            <p style="font-size: 20px;">Verifier Time: <input :defaultValue="level.verifierTime ? secondsToTime(level.verifierTime) : ''" class="inputs" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime" /></p>
             <div class="tabs">
             <button class="tab type-label-lg" :class="{selected: !toggleVerification}" @click="toggleVerification = false">
             <span class="type-label-lg">Showcase</span>
@@ -74,7 +75,7 @@ export default {
                     <p v-if="this.toggleVerification">Verification: <input :defaultValue='level.verification' v-model="level.verification" class="inputs"/></p>
                     <p v-else>Showcase: <input :defaultValue='level.ytcode' v-model="level.ytcode" class="inputs"/></p>
                     <p v-if="!level?.draft" style="font-size: 20px; font-weight: bold;">Records: <Btn @click.native.prevent="addRecord()" style="height: inherit; padding: 8px; padding-top: 4px; padding-bottom: 5px">+</Btn></p>
-                    <div style="height: 400px; overflow-y: auto; border: 1px solid; border-radius: 20px; padding: 20px;" v-if="!level?.draft">
+                    <div style="height: 400px; overflow-y: auto; border: 1px solid; border-radius: 20px; padding: 20px;" id="records" v-if="!level?.draft">
                         <div v-for="(record, i) of level.records">
                         <br>
                             <h5 style="text-decoration: underline; text-align: center;">Record by {{record.name}} <Btn @click.native.prevent="deleteRecord(i)" style="background-color: #e91e63; padding: 8px; padding-top: 2px; padding-bottom: 5px">-</Btn></h5>
@@ -86,7 +87,9 @@ export default {
                             <iframe class="video" id="videoframe" :src="recordVideo(record.link)" frameborder="0" width="300px"></iframe>
                             <br>
                             <br>
-                            <p>Time: <input :defaultValue='record.time' v-model="record.time" type="number" class="inputs"/></p>
+                            <p>Time: <input :defaultValue='secondsToTime(record.time)' placeholder="hh:mm:ss.SSS" @input.native.prevent="({target}) => convertRecordTime(i, target.value)" class="inputs"/></p>
+                            <br><br>
+                            <p>Date: <input :defaultValue="convertUnixToDate(i)" placeholder="mm/dd/yyyy HH:mm:ss.SSS" class="inputs" @input.native.prevent="({target}) => convertDateToUnix(i, target.value)"/></p>
                         </div>
                         <br>
                     </div>
@@ -121,6 +124,22 @@ export default {
         embed,
         getThumbnailFromId,
         getYoutubeIdFromUrl,
+        secondsToTime,
+        timeToSeconds,
+        convertUnixToDate(i) {
+            let date = dayjs(this.level.records[i].date).format("MM/DD/YYYY HH:mm:ss.SSS")
+            return date
+        },
+        convertDateToUnix(i, value) {
+            let date = dayjs(value, "MM/DD/YYYY HH:mm:ss.SSS").$d.getTime()
+            this.level.records[i].date = date
+        },
+        convertTime({target}) {
+            this.level.verifierTime = this.timeToSeconds(target.value)
+        },
+        convertRecordTime(i, value) {
+            this.level.records[i].time = this.timeToSeconds(value)
+        },
         updateCreators(element) {
             this.level.creator = element.target.value.split(", ")
         },
@@ -132,11 +151,15 @@ export default {
             this.levels.sort((a,b) => a.position - b.position)
         },
         addRecord() {
-            this.level.records.splice(0, 0, {
+            this.level.records.push({
                 name: "",
                 link: "",
-                time: 0
+                time: 0,
+                date: Date.now()
             })
+            setTimeout(() => {
+                document.getElementById("records").scrollTop = document.getElementById("records").scrollHeight - 500
+            }, 0)
         },
         async deleteDraft() {
             let confirm = await Swal.fire({
