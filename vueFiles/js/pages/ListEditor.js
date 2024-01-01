@@ -164,6 +164,7 @@ export default {
                 dateText: ""
             })
             setTimeout(() => {
+                this.level.records.at(-1).dateText = this.convertUnixToDate(this.level.records.length - 1)
                 document.getElementById("records").scrollTop = document.getElementById("records").scrollHeight - 500
             }, 0)
         },
