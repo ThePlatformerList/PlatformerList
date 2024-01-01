@@ -126,7 +126,7 @@
 }
 .page-list .meta .editors {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 0.75rem;
 }
 .page-list .meta .editors li {
