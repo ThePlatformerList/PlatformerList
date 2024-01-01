@@ -30,6 +30,8 @@ export default {
                 <br>
                 <p>{{ admin.id }}</p>
                 <br>
+                <p>{{ admin.type }}</p>
+                <br>
                 <p v-if="admin?.draft">Draft</p>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import { fetchList } from "../content.js";
-import { getThumbnailFromId, getYoutubeIdFromUrl, shuffle } from "../util.js";
+import { getThumbnailFromId, getYoutubeIdFromUrl, shuffle, timeToSeconds } from "../util.js";
+
 
 import Spinner from "../components/Spinner.js";
 import Btn from "../components/Btn.js";
@@ -38,7 +39,7 @@ export default {
                     <textarea v-model="submission.raw" class="inputs" style="margin-top: 10px;" placeholder="raw footage..."/>
                     <br><br>
                     <h3>Time</h3>
-                    <input v-model="submission.time" type="number" class="inputs" style="margin-top: 10px;" placeholder="time..."/>
+                    <input class="inputs" style="margin-top: 10px;" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime"/>
                     <br><br>
                     <h3>Comments?</h3>
                     <textarea v-model="submission.comments" class="inputs" style="margin-top: 10px;" placeholder="comments..."/>
@@ -67,6 +68,10 @@ export default {
         this.authenticated = user.ok
     },
     methods: {
+        timeToSeconds,
+        convertTime({target}) {
+            this.submission.time = this.timeToSeconds(target.value)
+        },
         async submit() {
             this.message = "Sending to server..."
             let req = await fetch("/api/submissions/@me", {

@@ -58,6 +58,10 @@ const levelsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    verifierTime: {
+        type: Number,
+        required: true
+    },
     levelID: {
         type: String,
         required: true,

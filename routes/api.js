@@ -326,10 +326,11 @@ app.route("/admins")
         let data = await request.json()
         return {
             ...data,
-            type: e.type
+            type: e.type,
+            typeEnum: userTypes.findIndex(x => x == e.type)
         }
     })
-    res.json(await Promise.all(users))
+    res.json((await Promise.all(users)).sort((a,b) => b.typeEnum - a.typeEnum))
 })
 .post(async (req, res, next) => {
     await createTransaction(async (session) => {

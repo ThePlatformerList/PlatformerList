@@ -1,5 +1,5 @@
 import { store } from '../main.js';
-import { embed, getFontColour } from '../util.js';
+import { embed, getFontColour, secondsToTime } from '../util.js';
 import { score } from '../score.js';
 import { fetchEditors, fetchList } from '../content.js';
 
@@ -70,6 +70,7 @@ export default {
                         </li>
                     </ul>
                     <h2>Records</h2>
+                    <p>Verifier's time: {{ level.verifierTime ? secondsToTime(level.verifierTime) : "N/A" }}</p>
                     <p v-if="selected + 1 > 150">This level does not accept new records.</p>
                     <div class="tabs">
             <button class="tab type-label-lg" :class="{selected: sortByTime}" @click="sortByTime = true">
@@ -82,7 +83,7 @@ export default {
                     <table class="records">
                         <tr v-for="record in level.records.sort((a,b) => (sortByTime ? a.time : a.date) - (sortByTime ? b.time : b.date))" class="record">
                             <td class="percent">
-                                <p>{{ record.time }}</p>
+                                <p>{{ secondsToTime(record.time) }}</p>
                             </td>
                             <td class="user">
                                 <a :href="record.link" target="_blank" class="type-label-lg">{{ record.name }}</a>
@@ -176,6 +177,7 @@ export default {
 	methods: {
 		embed,
 		score,
-        getFontColour
+        getFontColour,
+        secondsToTime
 	},
 };

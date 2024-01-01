@@ -1,5 +1,5 @@
 import { fetchList } from "../content.js";
-import { getThumbnailFromId, getYoutubeIdFromUrl, embed } from "../util.js";
+import { getThumbnailFromId, getYoutubeIdFromUrl, embed, secondsToTime, timeToSeconds } from "../util.js";
 
 import Spinner from "../components/Spinner.js";
 import Btn from "../components/Btn.js";
@@ -70,7 +70,7 @@ export default {
             <p>Discord ID: {{ submission.discord }}</p>
             <h2>{{ submission.level.position ? '(#' + submission.level.position + ')' : ''}} {{ submission.level.name }} by {{ submission.level.author }}</h2>
             <p>ID: <input v-model="submission.levelID" type="number" class="inputs"/></p>
-            <p>Time: <input v-model="submission.time" type="number" class="inputs"/> seconds</p>
+            <p>Time: <input :defaultValue="secondsToTime(submission.time)" class="inputs" @input.native.prevent="convertTime" placeholder="hh:mm:ss.SSS"/> seconds</p>
             <div class="tabs">
             <button class="tab type-label-lg" :class="{selected: !toggledRaw}" @click="toggledRaw = false">
             <span class="type-label-lg">Video</span>
@@ -116,6 +116,11 @@ export default {
         embed,
         getThumbnailFromId,
         getYoutubeIdFromUrl,
+        secondsToTime,
+        timeToSeconds,
+        convertTime({target}) {
+            this.submission.time = this.timeToSeconds(target.value)
+        },
         async submitSubmission(status) {
                let confirm = await Swal.fire({
                     title: "Confirm?",
