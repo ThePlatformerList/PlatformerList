@@ -81,7 +81,7 @@ export default {
         </button>
                     </div>
                     <table class="records">
-                        <tr v-for="record in level.records.sort((a,b) => (sortByTime ? a.time : a.date) - (sortByTime ? b.time : b.date))" class="record">
+                        <tr v-for="record in [...level.records, ...(sortByTime && level.verifierTime ? [{name: level.verifier, link: 'https://youtu.be/' + level.verification, time: level.verifierTime}] : [])].sort((a,b) => (sortByTime ? a.time : a.date) - (sortByTime ? b.time : b.date))" class="record">
                             <td class="percent">
                                 <p>{{ secondsToTime(record.time) }}</p>
                             </td>

@@ -60,9 +60,9 @@ export default {
             <p style="font-size: 20px; margin-top: 10px;">Author: <input v-model="level.author" class="inputs"/></p>
             <p style="font-size: 20px;">Level ID: <input v-model="level.levelID" class="inputs"/></p>
             <p style="font-size: 20px;">Password: <input v-model="level.password" class="inputs"/></p>
-            <p style="font-size: 20px;">Creators: <textarea :defaultValue="level.creator.join(', ')" @input.native.prevent="updateCreators" class="inputs"/></p>
+            <p style="font-size: 20px;">Creators: <textarea :value="level.creatorText" @input.native.prevent="updateCreators" class="inputs"/></p>
             <p style="font-size: 20px;">Verifier: <input v-model="level.verifier" class="inputs"/></p>
-            <p style="font-size: 20px;">Verifier Time: <input :defaultValue="level.verifierTime ? secondsToTime(level.verifierTime) : ''" class="inputs" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime" /></p>
+            <p style="font-size: 20px;">Verifier Time: <input :value="level.verifierTimeText" class="inputs" placeholder="hh:mm:ss.SSS" @input="convertTime" /></p>
             <div class="tabs">
             <button class="tab type-label-lg" :class="{selected: !toggleVerification}" @click="toggleVerification = false">
             <span class="type-label-lg">Showcase</span>
@@ -87,9 +87,9 @@ export default {
                             <iframe class="video" id="videoframe" :src="recordVideo(record.link)" frameborder="0" width="300px"></iframe>
                             <br>
                             <br>
-                            <p>Time: <input :defaultValue='secondsToTime(record.time)' placeholder="hh:mm:ss.SSS" @input.native.prevent="({target}) => convertRecordTime(i, target.value)" class="inputs"/></p>
+                            <p>Time: <input :value='record.timeText' placeholder="hh:mm:ss.SSS" @input.native.prevent="({target}) => convertRecordTime(i, target.value)" class="inputs"/></p>
                             <br><br>
-                            <p>Date: <textarea :defaultValue="convertUnixToDate(i)" placeholder="mm/dd/yyyy HH:mm:ss.SSS" class="inputs" @input.native.prevent="({target}) => convertDateToUnix(i, target.value)"/></p>
+                            <p>Date: <textarea :value="record.dateText" placeholder="mm/dd/yyyy HH:mm:ss.SSS" class="inputs" @input.native.prevent="({target}) => convertDateToUnix(i, target.value)"/></p>
                         </div>
                         <br>
                     </div>
@@ -133,14 +133,18 @@ export default {
         convertDateToUnix(i, value) {
             let date = dayjs(value, "MM/DD/YYYY HH:mm:ss.SSS").$d.getTime()
             this.level.records[i].date = date
+            this.level.records[i].dateText = value
         },
         convertTime({target}) {
+            this.level.verifierTimeText = target.value
             this.level.verifierTime = this.timeToSeconds(target.value)
         },
         convertRecordTime(i, value) {
             this.level.records[i].time = this.timeToSeconds(value)
+            this.level.records[i].timeText = value
         },
         updateCreators(element) {
+            this.level.creatorText = element.target.value
             this.level.creator = element.target.value.split(", ")
         },
         sortLevels(lev) {
@@ -155,7 +159,9 @@ export default {
                 name: "",
                 link: "",
                 time: 0,
-                date: Date.now()
+                date: Date.now(),
+                timeText: "",
+                dateText: ""
             })
             setTimeout(() => {
                 document.getElementById("records").scrollTop = document.getElementById("records").scrollHeight - 500
@@ -233,7 +239,7 @@ export default {
                 if (req.ok) {
                     this.levels = data
                     this.message = `Successfully added level.`
-                    this.level = { ...this.levels[this.levels.findIndex(e => e.levelID.toString() == this.level.levelID.toString())] }
+                    this.setLevel(this.levels.findIndex(e => e.levelID.toString() == this.level.levelID.toString()))
                     setTimeout(() => {
                         this.message = ""
                     }, 3000)
@@ -318,10 +324,10 @@ export default {
                 let req = await fetch("/api/levels")
                 let data = await req.json()
                 if (req.ok) {
-                    let newLevels = data
-                    this.levels = newLevels
+                    this.levels = data
                     this.message = `Successfully updated level.`
-                    this.level = {...this.levels[this.levels.findIndex(e => e._id.toString() == this.level._id.toString())] }
+                    this.setLevel(this.levels.findIndex(e => e._id.toString() == this.level._id.toString()))
+
                     setTimeout(() => {
                         this.message = ""
                     }, 3000)
@@ -333,6 +339,15 @@ export default {
         },
         setLevel(i) {
             this.level = this.levels[i]
+            this.level.creatorText = this.level.creator.join(', ')
+            this.level.verifierTimeText = this.level.verifierTime ? secondsToTime(this.level.verifierTime) : ''
+            this.level.records = this.level.records.map((e,i) => {
+                return {
+                    ...e,
+                    timeText: this.secondsToTime(e.time),
+                    dateText: this.convertUnixToDate(i)
+                }
+            })
         },
         recordVideo(link) {
             return embed(
