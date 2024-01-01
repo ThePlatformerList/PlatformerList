@@ -39,7 +39,7 @@ export default {
                     <textarea v-model="submission.raw" class="inputs" style="margin-top: 10px;" placeholder="raw footage..."/>
                     <br><br>
                     <h3>Time</h3>
-                    <input class="inputs" style="margin-top: 10px;" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime"/>
+                    <input class="inputs" :value="submission.timeText" style="margin-top: 10px;" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime"/>
                     <br><br>
                     <h3>Comments?</h3>
                     <br>
@@ -61,6 +61,7 @@ export default {
             link: "",
             raw: "",
             time: "",
+            timeText: "",
             comments: ""
         },
         authenticated: undefined
@@ -72,6 +73,7 @@ export default {
     methods: {
         timeToSeconds,
         convertTime({target}) {
+            this.submission.timeText = target.value
             this.submission.time = this.timeToSeconds(target.value)
         },
         async submit() {
@@ -90,6 +92,7 @@ export default {
                         link: "",
                         raw: "",
                         time: "",
+                        timeText: "",
                         comments: ""
                     } 
                     this.message = `Successfully submitted.`
