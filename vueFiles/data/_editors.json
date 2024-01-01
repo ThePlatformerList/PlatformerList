@@ -1,63 +1,93 @@
 [
     {
         "role": "owner",
-        "name": "Microwaveee",
-        "link": "https://www.youtube.com/channel/UC4BZvLEre3SrihXXL-eItWg"
-    },
-    {
-        "role": "owner",
-        "name": "JustCrust",
-        "link": "#"
-    },
-    {
-        "role": "owner",
-        "name": "Prometheus",
-        "link": "https://www.youtube.com/c/PrometheusAlt"
+        "name": "KugelBlitZ",
+        "link": "https://www.youtube.com/@DeathCorridor"
     },
     {
         "role": "admin",
-        "name": "TravelChimp",
-        "link": "https://www.youtube.com/@travelchimp8217"
+        "name": "legoyoshi3",
+        "link": "https://www.youtube.com/channel/UCUWOGjjpqgI8s7-Y416PMMw"
     },
     {
         "role": "admin",
-        "name": "KylashTheKiller",
-        "link": "https://youtube.com/@KylashTheKiller"
+        "name": "yoshneeds",
+        "link": "https://www.youtube.com/channel/UCfYZHVeqUVEnZnqMxq9mesw"
     },
     {
         "role": "admin",
-        "name": "SorryM8",
+        "name": "Meatius",
+        "link": "https://www.youtube.com/channel/UCPzc_WYj-3dihD1T84yFEfg"
+    },
+    {
+        "role": "admin",
+        "name": "Synactive",
+        "link": "https://www.twitch.tv/synactive_"
+    },
+    {
+        "role": "admin",
+        "name": "drakk",
+        "link": "https://www.youtube.com/channel/UCAK98inE5hKQ7jSN1wyUybA"
+    },
+    {
+        "role": "admin",
+        "name": "Neon",
+        "link": "https://www.youtube.com/channel/UCC7MI3qhdvygKhkQnAAVUJw"
+    },
+    {
+        "role": "admin",
+        "name": "th3name",
         "link": "#"
     },
     {
         "role": "seniormod",
-        "name": "SarcasticMuch",
-        "link": "https://www.youtube.com/channel/UCH4iSascx58Bfue2cfpWKJQ"
+        "name": "aytch0008",
+        "link": "https://www.youtube.com/channel/UC3B4cgGcYW2wQVbCc0YhO-w"
     },
     {
-        "role": "mod",
+        "role": "seniormod",
+        "name": "defthlow",
+        "link": "https://www.youtube.com/channel/UCrtk2D_B6pBCW3ssE6FjIlw"
+    },
+    {
+        "role": "seniormod",
+        "name": "KatnBlack",
+        "link": "#"
+    },
+    {
+        "role": "seniormod",
         "name": "lermor",
         "link": "#"
     },
     {
-        "role": "mod",
-        "name": "lucap123",
-        "link": "https://www.youtube.com/@lucap123gd8"
+        "role": "seniormod",
+        "name": "siniy rak",
+        "link": "https://youtube.com/@siniyrak?si=dcQIBPUejYgSeB08"
+    },
+    {
+        "role": "seniormod",
+        "name": "BlitZmys",
+        "link": "#"
+    },
+    {
+        "role": "seniormod",
+        "name": "Rin04",
+        "link": "#"
+    },
+    {
+        "role": "seniormod",
+        "name": "skilledfully",
+        "link": "#"
     },
     {
         "role": "mod",
-        "name": "srus",
-        "link": "https://www.youtube.com/channel/UCZWCsnRMKs7VSyO094YeyJw"
+        "name": "Hyperbola",
+        "link": "https://www.youtube.com/channel/UC5nYNkI8IKLYAu2rsMvpaLw"
     },
     {
         "role": "mod",
-        "name": "Wiktor",
-        "link": "https://www.youtube.com/channel/UCD9Q_xZmonsNc3FkQ_I1qTw"
-    },
-    {
-        "role": "mod",
-        "name": "homegrowntag",
-        "link": "https://www.youtube.com/channel/UCtPsZ68MCked5rgimzzX7Hw"
+        "name": "nintenfox",
+        "link": "https://www.youtube.com/channel/UCB5qyW1ZKf7uteA_EYy1ubw"
     },
     {
         "role": "dev",
@@ -66,8 +96,18 @@
     },
     {
         "role": "dev",
-        "name": "Emonadeo",
-        "link": "https://github.com/Emonadeo"
+        "name": "gdhpsk",
+        "link": "https://github.com/gdhpsk"
+    },
+    {
+        "role": "dev",
+        "name": "48exa",
+        "link": "https://www.youtube.com/channel/UCwQ5peXqwGnhNyBvjXICiiQ"
+    },
+    {
+        "role": "dev",
+        "name": "nattie",
+        "link": "https://www.youtube.com/channel/UCxbKCyK8PochT-OCwRByoGQ"
     },
     {
         "role": "dev",
