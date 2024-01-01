@@ -42,6 +42,8 @@ export default {
                     <input class="inputs" style="margin-top: 10px;" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime"/>
                     <br><br>
                     <h3>Comments?</h3>
+                    <br>
+                    <p>(Add a placement op if you have one)</p>
                     <textarea v-model="submission.comments" class="inputs" style="margin-top: 10px;" placeholder="comments..."/>
                     <br><br>
                 <br>
