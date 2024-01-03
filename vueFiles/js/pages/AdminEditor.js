@@ -94,7 +94,6 @@ export default {
                 e.avatar = e.avatar ? `https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.${e.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(e.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(e.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(e.discriminator) % 5}.png`
                 return e
             })
-            console.log(this.admins)
         }
     },
     computed: {
@@ -287,7 +286,6 @@ export default {
                 e.username = e.global_name ? e.username : `${e.username}#${e.discriminator}`
                 e.banner = e.banner ? `https://cdn.discordapp.com/banners/${e.id}/${e.banner}.${e.banner.startsWith("a_") ? "gif" : "png"}` : null
                 e.avatar = e.avatar ? `https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.${e.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(e.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(e.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(e.discriminator) % 5}.png`
-                console.log(e)
                 this.admins[this.index] = {...e, draft: true}
                 this.admin = {...e, draft: true}
             } else {
