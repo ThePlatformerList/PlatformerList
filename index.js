@@ -26,34 +26,5 @@ app.use("/authorize", require("./routes/authorize").app)
 app.use(express.static("vueFiles"))
 
 app.listen(process.env.PORT, async () => {
-    console.log("Listening on port 3000")
-    // let admins = await authorized.findOne().lean()
-    // admins.authorized = admins.authorized.map(e => {
-    //     return {
-    //         id: e,
-    //         type: "admin"
-    //     }
-    // })
-    // console.log(JSON.stringify(admins))
-    // let rec = await levels.create({
-    //     position: 1,
-    //     name: "LMFAO",
-    //     ytcode: "zzzzzzzzzzz",
-    //     creator: "Your mom",
-    //     levelID: "128",
-    //     verifier: "Your dad",
-    //     records: [
-    //         {
-    //             name: "hpsk",
-    //             link: "https://youtube.com",
-    //             time: 24.128
-    //         }
-    //     ]
-    // })
-    // await leaderboard.create({
-    //     name: "hpsk",
-    //     records: [
-    //         rec._id
-    //     ]
-    // })
+    console.log(`Listening on port ${process.env.PORT || 3000}`)
 })
