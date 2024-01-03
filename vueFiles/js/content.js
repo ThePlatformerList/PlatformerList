@@ -79,7 +79,7 @@ export async function fetchLeaderboard() {
             level: level.name,
             score: score(rank + 1, 100, level.percentToQualify || 100),
             link: level.verification,
-            time: secondsToTime(level.verifierTime),
+            time: level.verifierTime ? secondsToTime(level.verifierTime) : "N/A",
             path: level.path
         });
 

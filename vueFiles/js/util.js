@@ -2,7 +2,7 @@
 export function getYoutubeIdFromUrl(url) {
     return url.match(
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/,
-    )?.[1] ?? '';
+    )?.[1] ?? url;
 }
 
 export function embed(video) {
