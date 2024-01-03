@@ -177,7 +177,7 @@ export default {
 		},
 		video() {
 			if (!this.level.ytcode) {
-				return embed(this.level.verification);
+				return embed('https://youtu.be/'+this.level.verification);
 			}
 
 			return embed(
