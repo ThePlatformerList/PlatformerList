@@ -64,11 +64,11 @@ export default {
             <p style="font-size: 20px;">Verifier: <input v-model="level.verifier" class="inputs"/></p>
             <p style="font-size: 20px;">Verifier Time: <input :value="level.verifierTimeText" class="inputs" placeholder="hh:mm:ss.SSS" @input="convertTime" /></p>
             <div class="tabs">
+            <button class="tab" :class="{selected: toggleVerification}" @click="toggleVerification = true">
+            <span class="type-label-lg">Verification</span>
+        </button>
             <button class="tab type-label-lg" :class="{selected: !toggleVerification}" @click="toggleVerification = false">
             <span class="type-label-lg">Showcase</span>
-        </button>
-        <button class="tab" :class="{selected: toggleVerification}" @click="toggleVerification = true">
-            <span class="type-label-lg">Verification</span>
         </button>
                     </div>
                     <iframe class="video" id="videoframe" :src="video()" frameborder="0" width="300px"></iframe>
@@ -106,7 +106,7 @@ export default {
         levels: undefined,
         level: undefined,
         message: "",
-        toggleVerification: false
+        toggleVerification: true
     }),
     async mounted() {
         let ping = await fetch("/api/admin")
