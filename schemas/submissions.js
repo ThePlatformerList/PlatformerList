@@ -29,9 +29,10 @@ const submissionsSchema = new mongoose.Schema({
     },
     raw: {
         type: String,
-        required: true,
+        required: false,
         validate: {
             validator: async v => {
+                if(!v) return true;
                 let exists = await fetch(v)
                 return exists.ok
             },
