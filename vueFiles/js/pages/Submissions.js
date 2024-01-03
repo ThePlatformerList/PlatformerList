@@ -71,7 +71,7 @@ export default {
             <h2>{{ submission.level.position ? '(#' + submission.level.position + ')' : ''}} {{ submission.level.name }} by {{ submission.level.author }}</h2>
             <p>ID: <input v-model="submission.levelID" type="number" class="inputs"/></p>
             <p>Time: <input :defaultValue="secondsToTime(submission.time)" class="inputs" @input.native.prevent="convertTime" placeholder="hh:mm:ss.SSS"/> seconds</p>
-            <div class="tabs">
+            <div class="tabs" v-if="submission.raw">
             <button class="tab type-label-lg" :class="{selected: !toggledRaw}" @click="toggledRaw = false">
             <span class="type-label-lg">Video</span>
         </button>
@@ -194,7 +194,7 @@ export default {
         },
         video() {
             return embed(
-                this.toggledRaw ? this.submission.raw : this.submission.link,
+                this.toggledRaw && this.submission.raw ? this.submission.raw : this.submission.link,
             );
         },
     }
