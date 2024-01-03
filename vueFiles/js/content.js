@@ -1,4 +1,5 @@
 import { round, score } from './score.js';
+import { secondsToTime } from './util.js';
 
 /**
  * Path to directory containing `_list.json` and all levels
@@ -78,6 +79,7 @@ export async function fetchLeaderboard() {
             level: level.name,
             score: score(rank + 1, 100, level.percentToQualify || 100),
             link: level.verification,
+            time: secondsToTime(level.verifierTime),
             path: level.path
         });
 
@@ -99,6 +101,7 @@ export async function fetchLeaderboard() {
                     level: level.name,
                     score: score(rank + 1, 100, level.percentToQualify | 100),
                     link: record.link,
+                    time: secondsToTime(record.time),
                     path: level.path
                 });
         });
