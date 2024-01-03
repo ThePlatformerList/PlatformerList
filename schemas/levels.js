@@ -30,13 +30,14 @@ const levelsSchema = new mongoose.Schema({
     },
     ytcode: {
         type: String,
-        required: true,
+        required: false,
         validate: {
             validator: async v => {
-                let exists = await fetch("https://youtube.com/watch?v="+v)
+                if(!v) return true;
+                let exists = await fetch(`https://img.youtube.com/vi/${v}/mqdefault.jpg`)
                 return exists.ok
             },
-            message: "Not a valid youtube video"
+            message: "Not a valid YT Code"
         }
     },
     verification: {
@@ -44,10 +45,10 @@ const levelsSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: async v => {
-                let exists = await fetch("https://youtube.com/watch?v="+v)
+                let exists = await fetch(`https://img.youtube.com/vi/${v}/mqdefault.jpg`)
                 return exists.ok
             },
-            message: "Not a valid youtube video"
+            message: "Not a valid YT Code"
         }
     },
     creator: {

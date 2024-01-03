@@ -37,8 +37,8 @@ export default {
         </div>
         <div style="display: flex; gap: 20px; width: min(1000px, 100%);" id="submission-content" v-if="level">
         <div style="display: block;">
-        <a :href="'https://youtu.be/' + level.ytcode" target="_blank" class="video">
-            <img :src="getThumbnailFromId(getYoutubeIdFromUrl('https://youtu.be/' + level.ytcode))" alt="" width="200">
+        <a :href="'https://youtu.be/' + level.verification" target="_blank" class="video">
+            <img :src="getThumbnailFromId(getYoutubeIdFromUrl('https://youtu.be/' + level.verification))" alt="" width="200">
         </a>
         <br>
                 <div v-if="!level?.draft">

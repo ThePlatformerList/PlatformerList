@@ -163,7 +163,7 @@ app.route("/submissions")
                 'level': {
                   'position': '$level.position', 
                   'name': '$level.name', 
-                  'ytcode': '$level.ytcode', 
+                  'ytcode': '$level.verification', 
                   'author': '$level.author'
                 }
               }
@@ -244,7 +244,7 @@ app.route("/submissions/@me")
                 'level': {
                   'position': '$level.position', 
                   'name': '$level.name', 
-                  'ytcode': '$level.ytcode', 
+                  'ytcode': '$level.verification', 
                   'author': '$level.author'
                 }
               }
