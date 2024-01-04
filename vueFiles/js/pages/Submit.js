@@ -26,7 +26,7 @@ export default {
                 </div>
                 <br><br>
                 <div style="border: 1px solid; border-radius: 20px; padding: 20px;">
-                    <h3>Name</h3>
+                    <h3>Username</h3>
                     <input v-model="submission.name" class="inputs" style="margin-top: 10px;" placeholder="name..."/>
                     <br><br>
                     <h3>Level ID</h3>
