@@ -1,4 +1,4 @@
-:root {
+.light.root {
     --color-background: white;
     --color-on-background: black;
     --color-background-hover: #eee;
@@ -33,6 +33,35 @@
     --color-on-primary: white;
     --color-error: #de0000;
     --color-on-error: white;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --color-background: #1c1b1f;
+        --color-on-background: white;
+        --color-background-hover: #27262c;
+        --color-on-background-hover: white;
+        --color-primary: #283593;
+        --color-primary-disabled: #1f213c;
+        --color-on-primary: white;
+        --color-error: #de0000;
+        --color-on-error: white;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --color-background: white;
+        --color-on-background: black;
+        --color-background-hover: #eee;
+        --color-on-background-hover: black;
+        --color-primary: #3ca12a;
+        --color-primary-disabled: #3ca12a;
+        --color-on-primary: white;
+        --color-error: #de0000;
+        --color-on-error: white;
+    }
 }
 
 html,

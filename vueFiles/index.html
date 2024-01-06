@@ -41,7 +41,7 @@
     </script>
 </head>
 <body id="app">
-    <div class="root" :class="{ dark: store.dark }">
+    <div class="root" :class="{ dark: store.dark == true, light: store.dark == false }">
         <header class="surface">
             <div class="logo">
                 <img src="pl_icon.png" style="height:3rem;margin-top:0.5rem;">
