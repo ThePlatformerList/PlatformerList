@@ -2,7 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
-const authorized = require("./schemas/authorized")
+const nocache = require("nocache")
 const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, {
@@ -13,6 +13,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     tlsCertificateKeyFile: process.env.keyPath,
 })
 
+app.use(nocache())
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())

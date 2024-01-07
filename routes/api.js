@@ -193,7 +193,7 @@ app.route("/submissions")
         if(user.status) return res.status(user.status).json(user.body)
         let submission = await submissionsSchema.exists({_id: new ObjectId(req.body.id), discord: {$ne: user.id}})
         if(!submission) throw new Error("Could not find the given submission Object ID")
-        if(req.body.status == "accepted") {
+        if(req.body.status == "accepted" && !req.body.verification) {
             await levelsSchema.updateOne({levelID: req.body.levelID}, {
                 $push: {
                     records: {
