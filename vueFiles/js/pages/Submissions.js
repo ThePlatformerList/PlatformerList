@@ -38,7 +38,9 @@ export default {
             <div class="surface" style="padding: 10px; border: 1px solid;" @click.native.prevent="setSubmission(i)">
                 <h3>Submission #{{i+1}}</h3>
                 <br>
-                <p>By {{submission.name}}</p>
+                <p style="font-size: 19px;">{{submission.level.name}}</p>
+                <br>
+                <p style="font-size: 13px; margin-top: -10px">By {{submission.name}}</p>
             </div>
         </div>
         </div>
@@ -66,9 +68,12 @@ export default {
         </div>
         <div style="display: grid; gap: 20px;">
             <h1>Submission #{{index+1}}</h1>
+            <div style="display: flex; gap: 6px" v-if="submission.status == 'pending'">
+            <input type="checkbox" v-model="submission.verification" @input="setSubmissionAdd"/><span style="font-family: 'Lexend Deca', sans-serif;">Verification</span>
+            </div>
             <p style="font-size: 20px;">Submission by <input v-model="submission.name" class="inputs"/></p>
             <p>Discord ID: {{ submission.discord }}</p>
-            <h2>{{ submission.level.position ? '(#' + submission.level.position + ')' : ''}} {{ submission.level.name }} by {{ submission.level.author }}</h2>
+            <h2 style="margin-top: 15px;">{{ submission.level.position ? '(#' + submission.level.position + ')' : ''}} {{ submission.level.name }} by {{ submission.level.author }}</h2>
             <p>ID: <input v-model="submission.levelID" type="number" class="inputs"/></p>
             <p>Time: <input :defaultValue="secondsToTime(submission.time)" class="inputs" @input.native.prevent="convertTime" placeholder="hh:mm:ss.SSS"/> seconds</p>
             <div class="tabs" v-if="submission.raw">
@@ -105,6 +110,7 @@ export default {
         if (req.ok) {
             this.submissions = data.map(e => {
                 e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
+                e.verification = false
                 return e
             })
         }
@@ -157,6 +163,7 @@ export default {
                 if (req.ok) {
                     this.submissions = data.map(e => {
                         e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
+                        e.verification = false
                         return e
                     })
                     this.submission = undefined
@@ -172,6 +179,10 @@ export default {
                 this.message = data.message
             }
         },
+        async setSubmissionAdd({target}) {
+            let {checked} = target
+            this.submission.verification = checked
+        },
         async setSubmissions(archived) {
             if (archived == this.archived) return;
             this.message = "Loading..."
@@ -181,6 +192,7 @@ export default {
             if (req.ok) {
                 this.submissions = data.map(e => {
                     e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
+                    e.verification = false
                     return e
                 })
                 this.submission = undefined
@@ -189,7 +201,7 @@ export default {
             }
         },
         setSubmission(i) {
-            this.submission = { ...this.submissions[i] }
+            this.submission = this.submissions[i]
             this.index = i
         },
         video() {
