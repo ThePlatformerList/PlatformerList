@@ -39,7 +39,19 @@ export default {
                     <textarea v-model="submission.raw" class="inputs" style="margin-top: 10px;" placeholder="raw footage..."/>
                     <br><br>
                     <h3>Time</h3>
-                    <input class="inputs" :value="submission.timeText" style="margin-top: 10px;" placeholder="hh:mm:ss.SSS" @input.native.prevent="convertTime"/>
+                    <input class="inputs" :value="submission.timeText" style="margin-top: 10px; width: 260px;" placeholder="hh:mm:ss.SSS / mm:ss.SSS / ss.SSS" @input.native.prevent="convertTime"/>
+                    <table style="width: 260px;  font-family: 'Lexend Deca', sans-serif; margin-top: 10px;">
+                            <tr>
+                                <th>Hours</th>
+                                <th>Minutes</th>
+                                <th>Seconds</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;">{{ submission.timeText?.split(":")?.reverse()?.[2] || 00 }}</td>
+                                <td style="text-align: center;">{{ submission.timeText?.split(":")?.reverse()?.[1] || 00 }}</td>
+                                <td style="text-align: center;">{{ submission.timeText?.split(":")?.reverse()?.[0] || 00 }}</td>
+                            </tr>
+                    </table>
                     <br><br>
                     <h3>Comments?</h3>
                     <br>

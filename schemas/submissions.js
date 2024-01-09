@@ -24,19 +24,18 @@ const submissionsSchema = new mongoose.Schema({
                 let exists = await fetch(v)
                 return exists.ok
             },
-            message: "Not a valid youtube video"
+            message: "Not a valid video"
         }
     },
     raw: {
         type: String,
-        required: false,
+        required: true,
         validate: {
             validator: async v => {
-                if(!v) return true;
                 let exists = await fetch(v)
                 return exists.ok
             },
-            message: "Not a valid youtube video"
+            message: "Not a valid video"
         }
     },
     time: {
