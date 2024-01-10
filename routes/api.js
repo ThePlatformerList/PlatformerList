@@ -14,7 +14,10 @@ function authentication(type) {
         let user = await getUser(req, res)
         if(user.status) return res.status(user.status).json(user.body)
         let authorized = await authorizedSchema.findOne({authorized: {$elemMatch: {id: {$eq: user.id}}}})
-        if(authorized && userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) >= userTypes.indexOf(type)) return next()
+        if(authorized && userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type) >= userTypes.indexOf(type)) {
+            req.perms = userTypes.indexOf(authorized.authorized.find(e => e.id == user.id).type)
+            return next()
+        }
         return res.status(401).json({error: "401 UNAUTHORIZED", message: `You are not allowed to ${req.method} to /api${req.path}.`})
     }
 }
@@ -72,10 +75,25 @@ app.route("/levels")
         await levelsSchema.create([req.body], {session})
     }, res)
 })
-.patch(authentication("admin"), async (req, res) => {
+.patch(authentication("mod"), async (req, res) => {
     await createTransaction(async (session) => {
         let exists = await levelsSchema.findOne({_id: new ObjectId(req.body.id)})
         if(!exists) throw new Error("Could not find the given level")
+        if(req.body.update?.records) {
+            req.body.update.records.sort((a,b) => a.time - b.time)
+            req.body.update.records.map(e => {
+                e.date = exists.records.find(x => x.link == e.link)?.date || Date.now()
+                return e
+            })
+        }
+        if(req.perms < 1 && req.body.update.records) {
+            await levelsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
+                $set: {
+                    records: req.body.update.records
+                }
+            }, {session, runValidators: true})
+            return;
+        }
         if(req.body.update?.position && req.body.update.position != exists.position) {
             let documents = await levelsSchema.countDocuments()
             if(!Number.isInteger(req.body.update.position) || 0 >= req.body.update.position || documents < req.body.update.position) throw new Error("Path 'position': Invalid range")
@@ -92,13 +110,6 @@ app.route("/levels")
                     }
                 }
             }], {session})
-        }
-        if(req.body.update?.records) {
-            req.body.update.records.sort((a,b) => a.time - b.time)
-            req.body.update.records.map(e => {
-                e.date = exists.records.find(x => x.link == e.link)?.date || Date.now()
-                return e
-            })
         }
         await levelsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
             $set: req.body.update

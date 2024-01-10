@@ -20,7 +20,7 @@ export default {
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;">
-                        <Btn @click.native.prevent="listEditor" v-if="perms > 0">List Editor</Btn>
+                        <Btn @click.native.prevent="listEditor">List Editor</Btn>
                     </div>
                     <br>
                     <div class="surface" style="display: grid; place-items: center;">
