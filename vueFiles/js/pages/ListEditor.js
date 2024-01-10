@@ -16,7 +16,7 @@ export default {
         <div style="display: grid; place-items: center">
         <div style="display: grid; place-items: center;">
         <div style="width: fit-content; border-radius: 20px; border: 1px solid; padding: 20px;">
-        <p style="font-size: 20px; font-weight: bold;">Add Level <Btn @click.native.prevent="createLevelDraft()" style="height: inherit; padding: 8px; padding-top: 4px; padding-bottom: 5px">+</Btn></p>
+        <p style="font-size: 20px; font-weight: bold;">Add Level <Btn @click.native.prevent="createLevelDraft()" style="height: inherit; padding: 8px; padding-top: 4px; padding-bottom: 5px"  :disabled="perms < 1">+</Btn></p>
         <br>
         <div v-if="message">
             <h3 v-if="message" style="width: min(1000px, 100%); text-align: center;">{{ message }}</h3>
@@ -45,24 +45,24 @@ export default {
                 <Btn @click.native.prevent="submitLevel()">Submit</Btn>
                 <br>
                 <br>
-                <Btn style="background-color: #e91e63;" @click.native.prevent="deleteLevel()">Delete</Btn>
+                <Btn style="background-color: #e91e63;" @click.native.prevent="deleteLevel()" :disabled="perms < 1">Delete</Btn>
                 </div>
                 <div v-else>
-                    <Btn @click.native.prevent="addLevel()">Add</Btn>
+                    <Btn @click.native.prevent="addLevel()" :disabled="perms < 1">Add</Btn>
                     <br>
                 <br>
-                <Btn style="background-color: #e91e63;" @click.native.prevent="deleteDraft()">Delete Draft</Btn>
+                <Btn style="background-color: #e91e63;" @click.native.prevent="deleteDraft()" :disabled="perms < 1">Delete Draft</Btn>
                 </div>
         </div>
         <div style="display: grid; gap: 20px;">
             <input v-model="level.name" class="inputs" style="font-size: 30px"/>
-            <p style="font-size: 30px;">Position: <input v-model="level.position" type="number" class="inputs" @input.native.prevent="sortLevels(level)" /></p>
-            <p style="font-size: 20px; margin-top: 10px;">Author: <input v-model="level.author" class="inputs"/></p>
-            <p style="font-size: 20px;">Level ID: <input v-model="level.levelID" class="inputs"/></p>
-            <p style="font-size: 20px;">Password: <input v-model="level.password" class="inputs"/></p>
-            <p style="font-size: 20px;">Creators: <textarea :value="level.creatorText" @input.native.prevent="updateCreators" class="inputs"/></p>
-            <p style="font-size: 20px;">Verifier: <input v-model="level.verifier" class="inputs"/></p>
-            <p style="font-size: 20px;">Verifier Time: <input :value="level.verifierTimeText" class="inputs" placeholder="hh:mm:ss.SSS" @input="convertTime" /></p>
+            <p style="font-size: 30px;">Position: <input v-model="level.position" type="number" class="inputs" @input.native.prevent="sortLevels(level)" :disabled="perms < 1"/></p>
+            <p style="font-size: 20px; margin-top: 10px;">Author: <input v-model="level.author" class="inputs" :disabled="perms < 1"/></p>
+            <p style="font-size: 20px;">Level ID: <input v-model="level.levelID" class="inputs" :disabled="perms < 1"/></p>
+            <p style="font-size: 20px;">Password: <input v-model="level.password" class="inputs" :disabled="perms < 1"/></p>
+            <p style="font-size: 20px;">Creators: <textarea :value="level.creatorText" @input.native.prevent="updateCreators" class="inputs" :disabled="perms < 1"/></p>
+            <p style="font-size: 20px;">Verifier: <input v-model="level.verifier" class="inputs" :disabled="perms < 1"/></p>
+            <p style="font-size: 20px;">Verifier Time: <input :value="level.verifierTimeText" class="inputs" placeholder="hh:mm:ss.SSS" @input="convertTime" :disabled="perms < 1"/></p>
             <div class="tabs">
             <button class="tab" :class="{selected: toggleVerification}" @click="toggleVerification = true">
             <span class="type-label-lg">Verification</span>
@@ -72,8 +72,8 @@ export default {
         </button>
                     </div>
                     <iframe class="video" id="videoframe" :src="video()" frameborder="0" width="300px"></iframe>
-                    <p v-if="this.toggleVerification">Verification: <input :defaultValue='level.verification' v-model="level.verification" class="inputs"/></p>
-                    <p v-else>Showcase: <input :defaultValue='level.ytcode' v-model="level.ytcode" class="inputs"/></p>
+                    <p v-if="this.toggleVerification">Verification: <input :defaultValue='level.verification' v-model="level.verification" class="inputs"  :disabled="perms < 1"/></p>
+                    <p v-else>Showcase: <input :defaultValue='level.ytcode' v-model="level.ytcode" class="inputs"  :disabled="perms < 1"/></p>
                     <p v-if="!level?.draft" style="font-size: 20px; font-weight: bold;">Records: <Btn @click.native.prevent="addRecord()" style="height: inherit; padding: 8px; padding-top: 4px; padding-bottom: 5px">+</Btn></p>
                     <div style="height: 400px; overflow-y: auto; border: 1px solid; border-radius: 20px; padding: 20px;" id="records" v-if="!level?.draft">
                         <div v-for="(record, i) of level.records">
@@ -106,11 +106,14 @@ export default {
         levels: undefined,
         level: undefined,
         message: "",
+        perms: 0,
         toggleVerification: true
     }),
     async mounted() {
         let ping = await fetch("/api/admin")
         if(!ping.ok) return;
+        let adminLevel = await ping.json()
+        this.perms = adminLevel.type
         let req = await fetch("/api/levels")
         let data = await req.json()
         if (req.ok) {
