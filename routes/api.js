@@ -205,14 +205,29 @@ app.route("/submissions")
         let submission = await submissionsSchema.exists({_id: new ObjectId(req.body.id), discord: {$ne: user.id}})
         if(!submission) throw new Error("Could not find the given submission Object ID")
         if(req.body.status == "accepted" && !req.body.verification) {
-            await levelsSchema.updateOne({levelID: req.body.levelID}, {
-                $push: {
+            await levelsSchema.updateOne({levelID: req.body.levelID}, [{
+                $set: {
                     records: {
-                        ...req.body,
-                        date: Date.now()
+                        $concatArrays: [
+                            {
+                               $filter: {
+                                input: "$records",
+                                cond: {
+                                    $ne: ["$$this.name", req.body.name]
+                                }
+                               }
+                            },
+                            [{
+                                name: req.body.name,
+                                link: req.body.link,
+                                time: req.body.time,
+                                date: Date.now(),
+                                _id: new ObjectId(req.body._id)
+                            }]
+                        ]
                     }
                 }
-            }, {session})
+            }], {session})
         }
         await submissionsSchema.updateOne({_id: new ObjectId(req.body.id)}, {
             $set: req.body
