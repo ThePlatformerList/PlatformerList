@@ -63,7 +63,7 @@ export default {
                         </li>
                     </ul>
                     <h2>Records</h2>
-                    <p v-if="selected + 1 <= 150"><strong>{{ selectedPackLevels[selectedLevel][0].level.percentToQualify }}%</strong> or better to qualify</p>
+                    <p v-if="selected + 1 <= 50"><strong>{{ selectedPackLevels[selectedLevel][0].level.percentToQualify }}%</strong> or better to qualify</p>
                     <p v-else>100% or better to qualify</p>
                     <table class="records">
                         <tr v-for="record in selectedPackLevels[selectedLevel][0].records" class="record">

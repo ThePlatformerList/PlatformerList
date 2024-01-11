@@ -26,7 +26,7 @@ export default {
                 <table class="list" v-if="list">
                     <tr v-for="([level, err], i) in list">
                         <td class="rank">
-                            <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
+                            <p v-if="i + 1 <= 50" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
@@ -71,7 +71,7 @@ export default {
                     </ul>
                     <h2>Records</h2>
                     <p>Verifier's time: {{ level.verifierTime ? secondsToTime(level.verifierTime) : "N/A" }}</p>
-                    <p v-if="selected + 1 > 150">This level does not accept new records.</p>
+                    <p v-if="selected + 1 > 50">This level does not accept new records.</p>
                     <div class="tabs">
             <button class="tab type-label-lg" :class="{selected: sortByTime}" @click="sortByTime = true">
             <span class="type-label-lg">Time</span>
