@@ -90,6 +90,11 @@
         "link": "https://www.youtube.com/channel/UCB5qyW1ZKf7uteA_EYy1ubw"
     },
     {
+        "role": "mod",
+        "name": "Muzza",
+        "link": "https://www.youtube.com/channel/UCfCjxlscMcw9kzyn74JcjZg"
+    },
+    {
         "role": "dev",
         "name": "Prometheus",
         "link": "https://www.youtube.com/c/PrometheusAlt"
