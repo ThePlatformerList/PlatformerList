@@ -10,30 +10,30 @@
     <meta property="og:title" content="Platformer List" />
     <meta property="og:description"
         content="A list of the hardest Geometry Dash platformer levels" />
-    <meta property="og:url" content="https://pl.pages.dev" />
+    <meta property="og:url" content="https://gdplatformerlist.com/" />
     <meta property="og:image" content="/pl_icon.png" />
     <title>Platformer List</title>
     <link rel="icon" href="/pl_icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/css/typography.css" />
-    <link rel="stylesheet" type="text/css" href="/css/main.css" />
-    <link rel="stylesheet" type="text/css" href="/css/pages/list.css" />
-    <link rel="stylesheet" type="text/css" href="/css/pages/leaderboard.css" />
-    <link rel="stylesheet" type="text/css" href="/css/pages/roulette.css" />
-    <link rel="stylesheet" type="text/css" href="/css/pages/submissions.css" />
-    <link rel="stylesheet" type="text/css" href="/css/pages/listpacks.css" />
-    <link rel="stylesheet" type="text/css" href="/css/components/nav.css" />
-    <link rel="stylesheet" type="text/css" href="/css/components/btn.css" />
-    <link rel="stylesheet" type="text/css" href="/css/components/tabs.css" />
-    <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script type="module" src="/js/main.js"></script>
-    <script defer>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap" rel="stylesheet" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/reset.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/typography.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/main.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/pages/list.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/pages/leaderboard.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/pages/roulette.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/pages/submissions.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/pages/listpacks.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/components/nav.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/components/btn.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/components/tabs.css" /> -->
+    <!-- <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script> -->
+    <!-- <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script> -->
+    <!-- <script type="module" src="/js/main.js"></script> -->
+    <!-- <script defer>
         (async () => {
             let user = await fetch("/authorize/@me")
             if(user.ok) {
@@ -41,10 +41,10 @@
                 document.getElementById("login").children[0].innerText = "Settings"
             }
         })()
-    </script>
+    </script> -->
 </head>
 <body id="app">
-    <div class="root" :class="{ dark: store.dark == true, light: store.dark == false }">
+    <!-- <div class="root" :class="{ dark: store.dark == true, light: store.dark == false }">
         <header class="surface">
             <div class="logo">
                 <img src="pl_icon.png" style="height:3rem;margin-top:0.5rem;">
@@ -80,6 +80,28 @@
             </nav>
         </header>
         <router-view></router-view>
+    </div> -->
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0b0b17;
+            font-family: 'Rubik', sans-serif;
+            color: rgba(236, 243, 245, 0.8);
+            font-size: 2rem;
+            box-sizing: border-box;
+            padding: 4rem;
+            text-align: center;
+        }
+    </style>
+    <div class="container">
+        <span>Site down for maintenance, check back in about an hour</span>
     </div>
 </body>
 
