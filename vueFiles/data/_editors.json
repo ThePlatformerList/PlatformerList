@@ -11,13 +11,8 @@
     },
     {
         "role": "admin",
-        "name": "yoshneeds",
+        "name": "hoshyvention",
         "link": "https://www.youtube.com/channel/UCfYZHVeqUVEnZnqMxq9mesw"
-    },
-    {
-        "role": "admin",
-        "name": "Meatius",
-        "link": "https://www.youtube.com/channel/UCPzc_WYj-3dihD1T84yFEfg"
     },
     {
         "role": "admin",
@@ -31,38 +26,23 @@
     },
     {
         "role": "admin",
-        "name": "Neon",
-        "link": "https://www.youtube.com/channel/UCC7MI3qhdvygKhkQnAAVUJw"
-    },
-    {
-        "role": "admin",
         "name": "th3name",
         "link": "#"
     },
     {
-        "role": "seniormod",
+        "role": "mod",
         "name": "aytch0008",
         "link": "https://www.youtube.com/channel/UC3B4cgGcYW2wQVbCc0YhO-w"
     },
     {
-        "role": "seniormod",
-        "name": "defthlow",
-        "link": "https://www.youtube.com/channel/UCrtk2D_B6pBCW3ssE6FjIlw"
-    },
-    {
-        "role": "seniormod",
+        "role": "mod",
         "name": "KatnBlack",
         "link": "#"
     },
     {
-        "role": "seniormod",
+        "role": "mod",
         "name": "lermor",
         "link": "#"
-    },
-    {
-        "role": "seniormod",
-        "name": "siniy rak",
-        "link": "https://youtube.com/@siniyrak?si=dcQIBPUejYgSeB08"
     },
     {
         "role": "seniormod",
@@ -70,14 +50,19 @@
         "link": "#"
     },
     {
-        "role": "seniormod",
-        "name": "Rin04",
+        "role": "mod",
+        "name": "skilledfully",
         "link": "#"
     },
     {
         "role": "seniormod",
-        "name": "skilledfully",
-        "link": "#"
+        "name": "Neon",
+        "link": "https://www.youtube.com/channel/UCC7MI3qhdvygKhkQnAAVUJw"
+    },
+    {
+        "role": "mod",
+        "name": "Meatius",
+        "link": "https://www.youtube.com/channel/UCPzc_WYj-3dihD1T84yFEfg"
     },
     {
         "role": "mod",
@@ -91,8 +76,18 @@
     },
     {
         "role": "mod",
-        "name": "Muzza",
-        "link": "https://www.youtube.com/channel/UCfCjxlscMcw9kzyn74JcjZg"
+        "name": "RubyRules",
+        "link": "https://www.youtube.com/channel/UCp-eeDyGOTFmEzj9LxTUlvg"
+    },
+    {
+        "role": "mod",
+        "name": "Pandora",
+        "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
+    },
+    {
+        "role": "mod",
+        "name": "jae",
+        "link": "https://www.youtube.com/channel/UCq-d5i-0HZXgAyBV9a-iRHg"
     },
     {
         "role": "dev",
@@ -108,11 +103,6 @@
         "role": "dev",
         "name": "48exa",
         "link": "https://www.youtube.com/channel/UCwQ5peXqwGnhNyBvjXICiiQ"
-    },
-    {
-        "role": "dev",
-        "name": "nattie",
-        "link": "https://www.youtube.com/channel/UCxbKCyK8PochT-OCwRByoGQ"
     },
     {
         "role": "dev",
