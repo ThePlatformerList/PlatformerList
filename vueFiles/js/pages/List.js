@@ -26,7 +26,7 @@ export default {
                 <table class="list" v-if="list">
                     <tr v-for="([level, err], i) in list">
                         <td class="rank">
-                            <p v-if="i + 1 <= 1000" class="type-label-lg">#{{ i + 1 }}</p>
+                            <p v-if="i + 1 <= 50" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
