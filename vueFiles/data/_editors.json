@@ -15,19 +15,14 @@
         "link": "https://www.youtube.com/channel/UCfYZHVeqUVEnZnqMxq9mesw"
     },
     {
-        "role": "admin",
+        "role": "owner",
         "name": "Synactive",
         "link": "https://www.twitch.tv/synactive_"
     },
     {
-        "role": "admin",
+        "role": "seniormod",
         "name": "drakk",
         "link": "https://www.youtube.com/channel/UCAK98inE5hKQ7jSN1wyUybA"
-    },
-    {
-        "role": "admin",
-        "name": "th3name",
-        "link": "#"
     },
     {
         "role": "mod",
@@ -36,17 +31,7 @@
     },
     {
         "role": "mod",
-        "name": "KatnBlack",
-        "link": "#"
-    },
-    {
-        "role": "mod",
         "name": "lermor",
-        "link": "#"
-    },
-    {
-        "role": "seniormod",
-        "name": "BlitZmys",
         "link": "#"
     },
     {
@@ -66,18 +51,8 @@
     },
     {
         "role": "mod",
-        "name": "Hyperbola",
-        "link": "https://www.youtube.com/channel/UC5nYNkI8IKLYAu2rsMvpaLw"
-    },
-    {
-        "role": "mod",
         "name": "nintenfox",
         "link": "https://www.youtube.com/channel/UCB5qyW1ZKf7uteA_EYy1ubw"
-    },
-    {
-        "role": "mod",
-        "name": "RubyRules",
-        "link": "https://www.youtube.com/channel/UCp-eeDyGOTFmEzj9LxTUlvg"
     },
     {
         "role": "mod",
@@ -86,8 +61,8 @@
     },
     {
         "role": "mod",
-        "name": "jae",
-        "link": "https://www.youtube.com/channel/UCq-d5i-0HZXgAyBV9a-iRHg"
+        "name": "crerro",
+        "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
     },
     {
         "role": "dev",
