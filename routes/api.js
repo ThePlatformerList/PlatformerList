@@ -316,6 +316,8 @@ app.route("/submissions/@me")
 .post(async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
+    let exists = await submissionsSchema.exists({name: req.body.name, levelID: req.body.levelID})
+    if(exists) return res.status(400).json({error: "400 BAD REQUEST", message: "This submission already exists in the database!"})
     await createTransaction(async (session) => {
         await submissionsSchema.create([{...req.body, status: "pending", discord: user.id, date: Date.now()}], {session})
     }, res)
