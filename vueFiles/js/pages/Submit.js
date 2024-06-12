@@ -59,7 +59,7 @@ export default {
                     <textarea v-model="submission.comments" class="inputs" style="margin-top: 10px;" placeholder="comments..."/>
                     <br><br>
                 <br>
-                <Btn @click.native.prevent="submit">Submit</Btn>
+                <Btn @click.native.prevent="submit" id="submit">Submit</Btn>
                 </div>
                 </div>
             </div>
@@ -89,6 +89,7 @@ export default {
             this.submission.time = this.timeToSeconds(target.value)
         },
         async submit() {
+            document.getElementById("submit").disabled = true
             this.message = "Sending to server..."
             let req = await fetch("/api/submissions/@me", {
                 method: "POST",
@@ -114,6 +115,7 @@ export default {
                     }, 3000)
             } else {
                 let data = await req.json()
+                document.getElementById("submit").disabled = false
                 this.message = data.message
             }
         }
