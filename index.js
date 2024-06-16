@@ -7,10 +7,7 @@ const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, {
     dbName: "platformer",
-    readPreference: "primaryPreferred",
-    authSource: "$external",
-    authMechanism: "MONGODB-X509",
-    tlsCertificateKeyFile: process.env.keyPath,
+    readPreference: "primaryPreferred"
 })
 
 app.use(nocache())
