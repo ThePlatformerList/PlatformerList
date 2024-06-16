@@ -73,6 +73,7 @@ export async function fetchLeaderboard() {
             progressed: [],
             packs: [],
         };
+
         const { verified } = scoreMap[verifier];
         verified.push({
             rank: rank + 1,
@@ -99,7 +100,7 @@ export async function fetchLeaderboard() {
                 completed.push({
                     rank: rank + 1,
                     level: level.name,
-                    score: score(rank + 1, 100, level.percentToQualify | 100),
+                    score: user == verifier ? 0 : score(rank + 1, 100, level.percentToQualify | 100),
                     link: record.link,
                     time: secondsToTime(record.time),
                     path: level.path
