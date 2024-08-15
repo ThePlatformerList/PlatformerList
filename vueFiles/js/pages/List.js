@@ -142,7 +142,7 @@ export default {
                         </ol>
                     </template>
                     <h3> Submission Requirements </h3>
-                    <p>To see the platformer list submission guidelines, please click <a href="https://docs.google.com/document/d/10tF4VFQUxsU7RVohuEhVbggH6vCRx9fKnStV-bbRzXQ/" target="_blank" style="color: blue; text-decoration: underline;">here</a>. The guidelines were updated recently, so be sure to check them again!</p>
+                    <p><a href="https://docs.google.com/document/d/10tF4VFQUxsU7RVohuEhVbggH6vCRx9fKnStV-bbRzXQ/" target="_blank" style="color: blue; text-decoration: underline;">Click here to view the Submission Guidelines.</a> The guidelines were updated recently, so be sure to check them again!</p>
                 </div>
             </div>
         </main>
