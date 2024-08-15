@@ -23,6 +23,8 @@ app.use("/authorize", require("./routes/authorize").app)
 
 app.use(express.static("vueFiles"))
 
-app.listen(process.env.PORT, async () => {
-    console.log(`Listening on port ${process.env.PORT || 3000}`)
+const port = process.env.PORT || 3000
+
+app.listen(port, async () => {
+    console.log(`Listening on port ${port}`)
 })
