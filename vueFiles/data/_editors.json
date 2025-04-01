@@ -1,73 +1,103 @@
 [
     {
         "role": "owner",
+        "name": "Synactive",
+        "link": "https://www.youtube.com/channel/UC9ugoDkUnDn5cwd6BCtvGlw"
+    },
+    {
+        "role": "admin",
         "name": "KugelBlitZ",
         "link": "https://www.youtube.com/@DeathCorridor"
     },
     {
-        "role": "owner",
-        "name": "legoyoshi3",
+        "role": "admin",
+        "name": "Aibyou",
+        "link": "https://www.youtube.com/@aibyou83"
+    },
+    {
+        "role": "admin",
+        "name": "legoyoshi",
         "link": "https://www.youtube.com/channel/UCUWOGjjpqgI8s7-Y416PMMw"
     },
     {
         "role": "admin",
-        "name": "hoshyvention",
-        "link": "https://www.youtube.com/channel/UCfYZHVeqUVEnZnqMxq9mesw"
+        "name": "Crerro",
+        "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
     },
     {
-        "role": "owner",
-        "name": "Synactive",
-        "link": "https://www.twitch.tv/synactive_"
-    },
-    {
-        "role": "seniormod",
-        "name": "drakk",
-        "link": "https://www.youtube.com/channel/UCAK98inE5hKQ7jSN1wyUybA"
-    },
-    {
-        "role": "mod",
-        "name": "aytch0008",
-        "link": "https://www.youtube.com/channel/UC3B4cgGcYW2wQVbCc0YhO-w"
-    },
-    {
-        "role": "mod",
-        "name": "lermor",
-        "link": "#"
-    },
-    {
-        "role": "mod",
-        "name": "skilledfully",
-        "link": "#"
+        "role": "admin",
+        "name": "extatica",
+        "link": "https://www.youtube.com/@extatica468"
     },
     {
         "role": "seniormod",
-        "name": "Neon",
-        "link": "https://www.youtube.com/channel/UCC7MI3qhdvygKhkQnAAVUJw"
+        "name": "Toby135",
+        "link": "https://www.youtube.com/@Toby135"
     },
     {
-        "role": "mod",
-        "name": "Meatius",
-        "link": "https://www.youtube.com/channel/UCPzc_WYj-3dihD1T84yFEfg"
+        "role": "seniormod",
+        "name": "Maddy",
+        "link": "https://www.youtube.com/@ali-gd9834"
     },
     {
-        "role": "mod",
-        "name": "nintenfox",
-        "link": "https://www.youtube.com/channel/UCB5qyW1ZKf7uteA_EYy1ubw"
+        "role": "seniormod",
+        "name": "DavidConcal",
+        "link": "https://www.youtube.com/@davidconcal"
     },
     {
-        "role": "mod",
+        "role": "seniormod",
+        "name": "Elli=e",
+        "link": "https://www.youtube.com/@Ellie_2810"
+    },
+    {
+        "role": "seniormod",
+        "name": "Shroomy!!!",
+        "link": "https://www.youtube.com/@ponponto9991"
+    },
+    {
+        "role": "seniormod",
         "name": "Pandora",
         "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
     },
     {
-        "role": "mod",
-        "name": "crerro",
-        "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
+        "role": "seniormod",
+        "name": "ivory",
+        "link": "https://www.youtube.com/channel/UCRZKVsWgXo_OLQIaIIM1M4A"
     },
     {
-        "role": "dev",
-        "name": "Prometheus",
-        "link": "https://www.youtube.com/c/PrometheusAlt"
+        "role": "seniormod",
+        "name": "aytch",
+        "link": "https://www.youtube.com/channel/UC3B4cgGcYW2wQVbCc0YhO-w"
+    },
+    {
+        "role": "seniormod",
+        "name": "nintendrip",
+        "link": "https://www.youtube.com/@nintenfoxgd/videos"
+    },
+    {
+        "role": "seniormod",
+        "name": "panap",
+        "link": "https://www.youtube.com/@panap"
+    },
+    {
+        "role": "mod",
+        "name": "Chenii",
+        "link": "https://www.twitch.tv/chenii_06"
+    },
+    {
+        "role": "mod",
+        "name": "sequoya",
+        "link": "https://www.youtube.com/@Sequoyas"
+    },
+    {
+        "role": "mod",
+        "name": "Useless Dragon",
+        "link": "https://www.youtube.com/channel/UCO1AITwfUiaSE5f3F8k1sPA"
+    },
+    {
+        "role": "mod",
+        "name": "FrostByte",
+        "link": "https://www.youtube.com/channel/UCMSg3bJ8HJH1UwpMX2LQkBg"
     },
     {
         "role": "dev",
@@ -76,17 +106,17 @@
     },
     {
         "role": "dev",
-        "name": "48exa",
-        "link": "https://www.youtube.com/channel/UCwQ5peXqwGnhNyBvjXICiiQ"
+        "name": "Prometheus",
+        "link": "https://www.youtube.com/c/PrometheusAlt"
     },
     {
         "role": "dev",
-        "name": "KrisGra",
-        "link": "https://www.youtube.com/channel/UCrB80p9IxnDthH551FpqlwQ"
+        "name": "DrakXD109",
+        "link": "https://www.youtube.com/channel/UCAK98inE5hKQ7jSN1wyUybA"
     },
     {
         "role": "dev",
-        "name": "GD cripz",
-        "link": "https://www.youtube.com/@gdcripz"
+        "name": "krix",
+        "link": "#"
     }
 ]
