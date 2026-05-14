@@ -144,7 +144,7 @@ app.route("/submissions")
 .get(authentication("mod"), async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
-    const perPage = 100
+    const perPage = 50
     const page = Math.max(1, parseInt(req.query.page) || 1)
     let [result] = await submissionsSchema.aggregate([
         {
@@ -261,7 +261,7 @@ app.route("/submissions/@me")
 .get(async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
-    const perPage = 100
+    const perPage = 50
     const page = Math.max(1, parseInt(req.query.page) || 1)
     let [result] = await submissionsSchema.aggregate([
         {
