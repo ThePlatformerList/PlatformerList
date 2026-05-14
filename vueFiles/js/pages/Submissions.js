@@ -32,9 +32,11 @@ export default {
             <br><br>
         </div>
         <h2 style="text-align: center;" v-if="submissions && !submissions.length">No submissions currently.</h2>
-        <div v-if="totalPages > 1" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px;">
+        <div v-if="totalPages > 1" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
             <Btn @click.native.prevent="changePage(page - 1)" :disabled="page <= 1">Prev</Btn>
-            <span style="font-family: 'Lexend Deca', sans-serif;">Page {{ page }} / {{ totalPages }} ({{ total }} total)</span>
+            <span style="font-family: 'Lexend Deca', sans-serif;">Page</span>
+            <input type="number" min="1" :max="totalPages" :value="page" class="inputs" style="width: 80px; padding: 0.4rem; text-align: center;" @change="jumpToPage($event.target.value)" @keydown.enter="jumpToPage($event.target.value)" />
+            <span style="font-family: 'Lexend Deca', sans-serif;">/ {{ totalPages }} ({{ total }} total)</span>
             <Btn @click.native.prevent="changePage(page + 1)" :disabled="page >= totalPages">Next</Btn>
         </div>
         <div style="display: flex; gap: 30px;" id="submissions-content">
@@ -154,6 +156,11 @@ export default {
             this.message = "Loading..."
             const ok = await this.loadSubmissions()
             this.message = ok ? "" : this.message
+        },
+        jumpToPage(value) {
+            const p = parseInt(value)
+            if (!Number.isFinite(p)) return
+            this.changePage(Math.min(Math.max(1, p), this.totalPages))
         },
         async submitSubmission(status) {
                let confirm = await Swal.fire({
