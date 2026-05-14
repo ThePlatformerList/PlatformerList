@@ -32,11 +32,16 @@ export default {
             <br><br>
         </div>
         <h2 style="text-align: center;" v-if="submissions && !submissions.length">No submissions currently.</h2>
+        <div v-if="totalPages > 1" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <Btn @click.native.prevent="changePage(page - 1)" :disabled="page <= 1">Prev</Btn>
+            <span style="font-family: 'Lexend Deca', sans-serif;">Page {{ page }} / {{ totalPages }} ({{ total }} total)</span>
+            <Btn @click.native.prevent="changePage(page + 1)" :disabled="page >= totalPages">Next</Btn>
+        </div>
         <div style="display: flex; gap: 30px;" id="submissions-content">
         <div style="max-height: 500px; width: 300px; height: 100%; overflow-y: auto; display: flex; flex-direction: column;">
         <div v-for="(submission,i) in submissions" class="surface">
             <div class="surface" style="padding: 10px; border: 1px solid;" @click.native.prevent="setSubmission(i)">
-                <h3>Submission #{{i+1}}</h3>
+                <h3>Submission #{{(page - 1) * perPage + i + 1}}</h3>
                 <br>
                 <p style="font-size: 19px;">{{submission.level.name}}</p>
                 <br>
@@ -67,7 +72,7 @@ export default {
         </div>
         </div>
         <div style="display: grid; gap: 20px;">
-            <h1>Submission #{{index+1}}</h1>
+            <h1>Submission #{{(page - 1) * perPage + index + 1}}</h1>
             <div style="display: flex; gap: 6px" v-if="submission.status == 'pending'">
             <input type="checkbox" v-model="submission.verification" @input="setSubmissionAdd"/><span style="font-family: 'Lexend Deca', sans-serif;">Verification</span>
             </div>
@@ -102,18 +107,14 @@ export default {
         index: 0,
         message: "",
         toggledRaw: false,
-        archived: false
+        archived: false,
+        page: 1,
+        total: 0,
+        totalPages: 1,
+        perPage: 100
     }),
     async mounted() {
-        let req = await fetch("/api/submissions")
-        let data = await req.json()
-        if (req.ok) {
-            this.submissions = data.map(e => {
-                e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
-                e.verification = false
-                return e
-            })
-        }
+        await this.loadSubmissions()
     },
     computed: {
 
@@ -126,6 +127,33 @@ export default {
         timeToSeconds,
         convertTime({target}) {
             this.submission.time = this.timeToSeconds(target.value)
+        },
+        async loadSubmissions() {
+            const params = new URLSearchParams()
+            if (this.archived) params.set("archived", "true")
+            params.set("page", this.page)
+            let req = await fetch(`/api/submissions?${params.toString()}`)
+            let data = await req.json()
+            if (req.ok) {
+                this.submissions = data.submissions.map(e => {
+                    e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
+                    e.verification = false
+                    return e
+                })
+                this.total = data.total
+                this.totalPages = data.totalPages
+                this.perPage = data.perPage
+                this.submission = undefined
+                this.index = 0
+            }
+            return req.ok
+        },
+        async changePage(p) {
+            if (p < 1 || p > this.totalPages || p === this.page) return
+            this.page = p
+            this.message = "Loading..."
+            const ok = await this.loadSubmissions()
+            this.message = ok ? "" : this.message
         },
         async submitSubmission(status) {
                let confirm = await Swal.fire({
@@ -158,16 +186,8 @@ export default {
             })
             if (req.ok) {
                 this.message = "Fetching new information..."
-                let req = await fetch(`/api/submissions${this.archived ? "?archived=true" : ""}`)
-                let data = await req.json()
-                if (req.ok) {
-                    this.submissions = data.map(e => {
-                        e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
-                        e.verification = false
-                        return e
-                    })
-                    this.submission = undefined
-                    this.index = 0
+                const ok = await this.loadSubmissions()
+                if (ok) {
                     this.message = `Successfully edited submission status to '${status}'.`
                     setTimeout(() => {
                         this.message = ""
@@ -187,18 +207,9 @@ export default {
             if (archived == this.archived) return;
             this.message = "Loading..."
             this.archived = archived
-            let req = await fetch(`/api/submissions${archived ? "?archived=true" : ""}`)
-            let data = await req.json()
-            if (req.ok) {
-                this.submissions = data.map(e => {
-                    e.level.video = `https://youtu.be/${e.level.ytcode || ""}`
-                    e.verification = false
-                    return e
-                })
-                this.submission = undefined
-                this.index = 0
-                this.message = ""
-            }
+            this.page = 1
+            const ok = await this.loadSubmissions()
+            if (ok) this.message = ""
         },
         setSubmission(i) {
             this.submission = this.submissions[i]

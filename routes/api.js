@@ -6,6 +6,7 @@ const submissionsSchema = require("../schemas/submissions")
 const {getUser} = require("./authorize")
 const { ObjectId } = require("bson")
 const app = express.Router()
+const {getLevel} = require("../gd/gd")
 
 let userTypes = ["mod", "admin", "owner"]
 
@@ -143,52 +144,67 @@ app.route("/submissions")
 .get(authentication("mod"), async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
-    let submissions = await submissionsSchema.aggregate([
+    const perPage = 100
+    const page = Math.max(1, parseInt(req.query.page) || 1)
+    let [result] = await submissionsSchema.aggregate([
         {
             $match: {status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}, discord: {$ne: user.id}}
         },
-            {
-              '$lookup': {
-                'from': 'levels', 
-                'localField': 'levelID', 
-                'foreignField': 'levelID', 
-                'as': 'level'
-              }
-            }, {
-              '$set': {
-                'level': {
-                  '$first': '$level'
-                }
-              }
-            }, {
-              '$project': {
-                'name': 1, 
-                'date': 1, 
-                'levelID': 1, 
-                'link': 1,
-                'raw': 1, 
-                'time': 1, 
-                'discord': 1, 
-                'comments': 1,
-                'status': 1, 
-                'level': {
-                  'position': '$level.position', 
-                  'name': '$level.name', 
-                  'ytcode': '$level.verification', 
-                  'author': '$level.author'
-                }
-              }
-            },
-            {
-                '$sort': {
-                    'date': 1
-                }
+        {
+            '$sort': {
+                'date': 1
             }
-          ])
-    let formatted_submissions = submissions.map(async e => {
+        },
+        {
+            '$facet': {
+                'data': [
+                    { '$skip': (page - 1) * perPage },
+                    { '$limit': perPage },
+                    {
+                      '$lookup': {
+                        'from': 'levels',
+                        'localField': 'levelID',
+                        'foreignField': 'levelID',
+                        'as': 'level'
+                      }
+                    },
+                    {
+                      '$set': {
+                        'level': {
+                          '$first': '$level'
+                        }
+                      }
+                    },
+                    {
+                      '$project': {
+                        'name': 1,
+                        'date': 1,
+                        'levelID': 1,
+                        'link': 1,
+                        'raw': 1,
+                        'time': 1,
+                        'discord': 1,
+                        'comments': 1,
+                        'status': 1,
+                        'level': {
+                          'position': '$level.position',
+                          'name': '$level.name',
+                          'ytcode': '$level.verification',
+                          'author': '$level.author'
+                        }
+                      }
+                    }
+                ],
+                'meta': [
+                    { '$count': 'total' }
+                ]
+            }
+        }
+    ])
+    let total = result.meta[0]?.total || 0
+    let formatted_submissions = result.data.map(async e => {
         if(!e.level.name) {
-            let re = await fetch(`https://gdbrowser.com/api/level/${e.levelID}`)
-            let data = await re.json()
+            let data = await getLevel(e.levelID)
             e.level = {
                 name: data.name,
                 author: data.author
@@ -196,7 +212,13 @@ app.route("/submissions")
         }
         return e
     })
-    return res.json(await Promise.all(formatted_submissions))
+    return res.json({
+        submissions: await Promise.all(formatted_submissions),
+        total,
+        page,
+        totalPages: Math.max(1, Math.ceil(total / perPage)),
+        perPage
+    })
 })
 .patch(authentication("mod"), async (req, res) => {
     await createTransaction(async (session) => {
@@ -239,52 +261,67 @@ app.route("/submissions/@me")
 .get(async (req, res) => {
     let user = await getUser(req, res)
     if(user.status) return res.status(user.status).json(user.body)
-    let submissions = await submissionsSchema.aggregate([
+    const perPage = 100
+    const page = Math.max(1, parseInt(req.query.page) || 1)
+    let [result] = await submissionsSchema.aggregate([
         {
             $match: {status: req.query.archived ? {$ne: "pending"} : {$eq: "pending"}, discord: user.id}
         },
-            {
-              '$lookup': {
-                'from': 'levels', 
-                'localField': 'levelID', 
-                'foreignField': 'levelID', 
-                'as': 'level'
-              }
-            }, {
-              '$set': {
-                'level': {
-                  '$first': '$level'
-                }
-              }
-            }, {
-              '$project': {
-                'name': 1,
-                'date': 1, 
-                'levelID': 1, 
-                'link': 1,
-                'raw': 1, 
-                'time': 1, 
-                'discord': 1, 
-                'comments': 1,
-                'status': 1, 
-                'level': {
-                  'position': '$level.position', 
-                  'name': '$level.name', 
-                  'ytcode': '$level.verification', 
-                  'author': '$level.author'
-                }
-              }
-            },
-            {
-                '$sort': {
-                    'date': 1
-                }
+        {
+            '$sort': {
+                'date': 1
             }
-          ])
-    let formatted_submissions = submissions.map(async e => {
+        },
+        {
+            '$facet': {
+                'data': [
+                    { '$skip': (page - 1) * perPage },
+                    { '$limit': perPage },
+                    {
+                      '$lookup': {
+                        'from': 'levels',
+                        'localField': 'levelID',
+                        'foreignField': 'levelID',
+                        'as': 'level'
+                      }
+                    },
+                    {
+                      '$set': {
+                        'level': {
+                          '$first': '$level'
+                        }
+                      }
+                    },
+                    {
+                      '$project': {
+                        'name': 1,
+                        'date': 1,
+                        'levelID': 1,
+                        'link': 1,
+                        'raw': 1,
+                        'time': 1,
+                        'discord': 1,
+                        'comments': 1,
+                        'status': 1,
+                        'level': {
+                          'position': '$level.position',
+                          'name': '$level.name',
+                          'ytcode': '$level.verification',
+                          'author': '$level.author'
+                        }
+                      }
+                    }
+                ],
+                'meta': [
+                    { '$count': 'total' }
+                ]
+            }
+        }
+    ])
+    let total = result.meta[0]?.total || 0
+    let formatted_submissions = result.data.map(async e => {
         if(!e.level.name) {
-            let re = await fetch(`https://gdbrowser.com/api/level/${e.levelID}`)
-            let data = await re.json()
+            let data = await getLevel(e.levelID)
             e.level = {
                 name: data.name,
                 author: data.author
@@ -292,7 +329,13 @@ app.route("/submissions/@me")
         }
         return e
     })
-    return res.json(await Promise.all(formatted_submissions))
+    return res.json({
+        submissions: await Promise.all(formatted_submissions),
+        total,
+        page,
+        totalPages: Math.max(1, Math.ceil(total / perPage)),
+        perPage
+    })
 })
 .patch(async (req, res) => {
     let user = await getUser(req, res)
