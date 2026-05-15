@@ -205,6 +205,7 @@ app.route("/submissions")
     let formatted_submissions = result.data.map(async e => {
         if(!e.level.name) {
             let data = await getLevel(e.levelID)
+            data = data[0] || {}
             e.level = {
                 name: data.name,
                 author: data.author
@@ -322,6 +323,7 @@ app.route("/submissions/@me")
     let formatted_submissions = result.data.map(async e => {
         if(!e.level.name) {
             let data = await getLevel(e.levelID)
+            data = data[0] || {}
             e.level = {
                 name: data.name,
                 author: data.author

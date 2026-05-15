@@ -10,8 +10,9 @@ const submissionsSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: async v => {
-                let exists = await fetch(`https://gdbrowser.com/api/search/${v}?page=0&count=10`)
-                return exists.ok
+                let exists = await getLevel(v)
+                exists = exists[0] || {}
+                return !!exists.id
             },
             message: "Not a valid level ID!"
         }
