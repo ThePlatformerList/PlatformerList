@@ -31,38 +31,13 @@
     },
     {
         "role": "seniormod",
-        "name": "Abby135",
-        "link": "https://www.youtube.com/@ItsAbbyhere135"
-    },
-    {
-        "role": "seniormod",
         "name": "Maddy",
         "link": "https://www.youtube.com/@ali-gd9834"
     },
     {
         "role": "seniormod",
-        "name": "DavidConcal",
-        "link": "https://www.youtube.com/@davidconcal"
-    },
-    {
-        "role": "seniormod",
-        "name": "Elli=e",
-        "link": "https://www.youtube.com/@Ellie_2810"
-    },
-    {
-        "role": "seniormod",
-        "name": "Shroomy!!!",
-        "link": "https://www.youtube.com/@ponponto9991"
-    },
-    {
-        "role": "seniormod",
-        "name": "Pandora",
-        "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
-    },
-    {
-        "role": "seniormod",
-        "name": "ivory",
-        "link": "https://www.youtube.com/channel/UCRZKVsWgXo_OLQIaIIM1M4A"
+        "name": "ColorsSSS",
+        "link": "https://youtube.com/@colorssssssss"
     },
     {
         "role": "seniormod",
@@ -86,11 +61,6 @@
     },
     {
         "role": "mod",
-        "name": "sequoya",
-        "link": "https://www.youtube.com/@Sequoyas"
-    },
-    {
-        "role": "mod",
         "name": "Useless Dragon",
         "link": "https://www.youtube.com/channel/UCO1AITwfUiaSE5f3F8k1sPA"
     },
@@ -108,15 +78,5 @@
         "role": "dev",
         "name": "Prometheus",
         "link": "https://www.youtube.com/c/PrometheusAlt"
-    },
-    {
-        "role": "dev",
-        "name": "DrakXD109",
-        "link": "https://www.youtube.com/channel/UCAK98inE5hKQ7jSN1wyUybA"
-    },
-    {
-        "role": "dev",
-        "name": "krix",
-        "link": "#"
     }
 ]
