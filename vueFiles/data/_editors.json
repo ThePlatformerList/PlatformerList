@@ -31,6 +31,11 @@
     },
     {
         "role": "seniormod",
+        "name": "Finnon",
+        "link": "https://www.youtube.com/@Finnon"
+    },
+    {
+        "role": "seniormod",
         "name": "Maddy",
         "link": "https://www.youtube.com/@ali-gd9834"
     },
@@ -38,6 +43,21 @@
         "role": "seniormod",
         "name": "ColorsSSS",
         "link": "https://youtube.com/@colorssssssss"
+    },
+    {
+        "role": "seniormod",
+        "name": "Bananuusa",
+        "link": "https://www.youtube.com/channel/UCAy6hVbPVoFiMyKqnoIBWfw"
+    },
+    {
+        "role": "seniormod",
+        "name": "Zona",
+        "link": "https://www.youtube.com/@zob3412"
+    },
+    {
+        "role": "seniormod",
+        "name": "Ivren",
+        "link": "https://www.youtube.com/channel/UCXgzSWIHVxcbLVyvSK0c_tg"
     },
     {
         "role": "seniormod",
@@ -51,13 +71,28 @@
     },
     {
         "role": "seniormod",
+        "name": "ungafo",
+        "link": "https://www.youtube.com/channel/UCdTHIzaFOMhUDybGsQ4jEgg"
+    },
+    {
+        "role": "seniormod",
+        "name": "Jopianos",
+        "link": "https://www.youtube.com/@Jopianoss"
+    },
+    {
+        "role": "seniormod",
+        "name": "Ruslanych",
+        "link": "https://www.youtube.com/@leonidabdrakhmanov5106"
+    },
+    {
+        "role": "seniormod",
         "name": "panap",
         "link": "https://www.youtube.com/@panap"
     },
     {
         "role": "mod",
-        "name": "Chenii",
-        "link": "https://www.twitch.tv/chenii_06"
+        "name": "reticent",
+        "link": "https://www.youtube.com/channel/UClwjL5ZWEXRkb1JaGOw6FUA"
     },
     {
         "role": "mod",
