@@ -31,8 +31,8 @@
     },
     {
         "role": "seniormod",
-        "name": "Abby135",
-        "link": "https://www.youtube.com/@ItsAbbyhere135"
+        "name": "Finnon",
+        "link": "https://www.youtube.com/@Finnon"
     },
     {
         "role": "seniormod",
@@ -41,28 +41,23 @@
     },
     {
         "role": "seniormod",
-        "name": "DavidConcal",
-        "link": "https://www.youtube.com/@davidconcal"
+        "name": "ColorsSSS",
+        "link": "https://youtube.com/@colorssssssss"
     },
     {
         "role": "seniormod",
-        "name": "Elli=e",
-        "link": "https://www.youtube.com/@Ellie_2810"
+        "name": "Bananuusa",
+        "link": "https://www.youtube.com/channel/UCAy6hVbPVoFiMyKqnoIBWfw"
     },
     {
         "role": "seniormod",
-        "name": "Shroomy!!!",
-        "link": "https://www.youtube.com/@ponponto9991"
+        "name": "Zona",
+        "link": "https://www.youtube.com/@zob3412"
     },
     {
         "role": "seniormod",
-        "name": "Pandora",
-        "link": "https://www.youtube.com/channel/UC48Kb85B3YSOc72b6Zwcb4Q"
-    },
-    {
-        "role": "seniormod",
-        "name": "ivory",
-        "link": "https://www.youtube.com/channel/UCRZKVsWgXo_OLQIaIIM1M4A"
+        "name": "Ivren",
+        "link": "https://www.youtube.com/channel/UCXgzSWIHVxcbLVyvSK0c_tg"
     },
     {
         "role": "seniormod",
@@ -76,18 +71,28 @@
     },
     {
         "role": "seniormod",
+        "name": "ungafo",
+        "link": "https://www.youtube.com/channel/UCdTHIzaFOMhUDybGsQ4jEgg"
+    },
+    {
+        "role": "seniormod",
+        "name": "Jopianos",
+        "link": "https://www.youtube.com/@Jopianoss"
+    },
+    {
+        "role": "seniormod",
+        "name": "Ruslanych",
+        "link": "https://www.youtube.com/@leonidabdrakhmanov5106"
+    },
+    {
+        "role": "seniormod",
         "name": "panap",
         "link": "https://www.youtube.com/@panap"
     },
     {
         "role": "mod",
-        "name": "Chenii",
-        "link": "https://www.twitch.tv/chenii_06"
-    },
-    {
-        "role": "mod",
-        "name": "sequoya",
-        "link": "https://www.youtube.com/@Sequoyas"
+        "name": "reticent",
+        "link": "https://www.youtube.com/channel/UClwjL5ZWEXRkb1JaGOw6FUA"
     },
     {
         "role": "mod",
@@ -108,15 +113,5 @@
         "role": "dev",
         "name": "Prometheus",
         "link": "https://www.youtube.com/c/PrometheusAlt"
-    },
-    {
-        "role": "dev",
-        "name": "DrakXD109",
-        "link": "https://www.youtube.com/channel/UCAK98inE5hKQ7jSN1wyUybA"
-    },
-    {
-        "role": "dev",
-        "name": "krix",
-        "link": "#"
     }
 ]
